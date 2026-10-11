@@ -8,9 +8,11 @@
     btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', 'expGuide');
     btn.innerHTML = '<span>MILESTONES &amp; TIPS</span><span class="chev" aria-hidden="true">▾</span>';
     var box = document.createElement('div'); box.className = 'exp-guide'; box.id = 'expGuide'; box.hidden = true;
-    bar.parentNode.insertBefore(btn, bar.nextSibling); btn.parentNode.insertBefore(box, btn.nextSibling);
+    // the two buttons sit side by side under the expedition card; the guide opens below them
+    var row = document.createElement('div'); row.className = 'exp-actions';
     var al = document.createElement('div'); al.innerHTML = '<a class="exp-alert-link" href="https://weather.nomansskyhub.app/?alerts=exp" target="_blank" rel="noopener" title="Notifications when an expedition starts and 24 hours before it ends">🔔 EXPEDITION ALERTS</a>';
-    box.parentNode.insertBefore(al.firstChild, box.nextSibling);
+    row.appendChild(btn); row.appendChild(al.firstChild);
+    bar.parentNode.insertBefore(row, bar.nextSibling); row.parentNode.insertBefore(box, row.nextSibling);
     var loaded = false, guide = null, cur = 1;
     function draw() {
       var p = guide.phases.filter(function (x) { return x.phase === cur; })[0] || guide.phases[0];
