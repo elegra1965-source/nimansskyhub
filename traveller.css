@@ -6,9 +6,11 @@
 .tid-c.a{top:10px;left:10px;border-width:2px 0 0 2px}.tid-c.b{bottom:10px;right:10px;border-width:0 2px 2px 0}
 .tid-h{font-size:clamp(1.4rem,2.6vw,2rem)!important}
 .tid-sub{margin:10px 0 18px;color:var(--text-dim);font-size:1.02rem;max-width:62ch}
-.tid-form{display:grid;grid-template-columns:1.3fr 1fr 1.3fr;gap:12px;align-items:end}
+.tid-form{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.3fr;gap:12px;align-items:end}
 .tid-form label{display:flex;flex-direction:column;gap:6px;min-width:0}
 .tid-form label span{font-family:var(--f-mono);font-size:.7rem;letter-spacing:3px;color:var(--gold)}
+.tid-form label span em{font-style:normal;letter-spacing:1px;color:var(--text-dim);text-transform:none}
+#tidCode{font-family:var(--f-mono);letter-spacing:2px;text-transform:uppercase}
 .tid-form input,.tid-form select{width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(0,229,255,.3);background:rgba(0,229,255,.04);color:var(--white);font-family:var(--f-body);font-size:1rem}
 .tid-form select option{background:#0a1424;color:var(--white)}
 .tid-form input:focus,.tid-form select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,.2)}

@@ -1,5 +1,5 @@
 /* No Man's Sky Hub — Traveller ID (2026-10-09).
-   Name, platform and home galaxy, saved once here and read by the sister apps through a
+   Name, platform, NMS friend code (optional, 2026-10-13) and home galaxy, saved once here and read by the sister apps through a
    small cookie on .nomansskyhub.app (no account, nothing sent to a server):
    ATLAS greets you by name, the Galactic Map opens in your home galaxy, and the Weather
    station's planet card carries your name. */
@@ -26,12 +26,13 @@
       '<form class="tid-form" autocomplete="off">' +
       '<label><span>NAME</span><input id="tidName" maxlength="24" placeholder="Your in-game name"></label>' +
       '<label><span>PLATFORM</span><select id="tidPlat"><option value="">Choose…</option>' + PLAT.map(function (p) { return '<option>' + p + '</option>'; }).join('') + '</select></label>' +
+      '<label><span>NMS FRIEND CODE <em>optional</em></span><input id="tidCode" maxlength="16" placeholder="e.g. 1ABC-D2EF-3GH4J" spellcheck="false" autocapitalize="characters"></label>' +
       '<label><span>HOME GALAXY</span><select id="tidGal">' + gal + '</select></label>' +
       '<div class="tid-btns"><button class="tid-save" type="submit">◈ SAVE TRAVELLER ID</button><button class="tid-clear" type="button">Forget me</button></div>' +
       '</form><div class="tid-status" role="status" aria-live="polite"></div></div>';
     foot.parentNode.insertBefore(sec, foot);
-    var n = sec.querySelector('#tidName'), p = sec.querySelector('#tidPlat'), g = sec.querySelector('#tidGal'), st = sec.querySelector('.tid-status');
-    if (t.n) n.value = t.n; if (t.p) p.value = t.p; g.value = String(t.g >= 0 ? t.g : 0);
+    var n = sec.querySelector('#tidName'), p = sec.querySelector('#tidPlat'), g = sec.querySelector('#tidGal'), st = sec.querySelector('.tid-status'), fc = sec.querySelector('#tidCode');
+    if (t.n) n.value = t.n; if (t.fc) fc.value = t.fc; if (t.p) p.value = t.p; g.value = String(t.g >= 0 ? t.g : 0);
     var card = sec.querySelector('.tid-card'), sum = sec.querySelector('.tid-sum');
     // once saved the card folds to one line; EDIT opens the form again
     function show() {
@@ -48,10 +49,11 @@
       var name = n.value.replace(/[^\p{L}\p{N} ._'-]/gu, '').trim().slice(0, 24);
       if (!name) { st.textContent = 'Add a name first, Traveller.'; n.focus(); return; }
       var gi = Math.max(0, Math.min(255, parseInt(g.value, 10) || 0)), go = g.options[g.selectedIndex];
-      write({ n: name, p: PLAT.indexOf(p.value) >= 0 ? p.value : '', g: gi, gn: go ? go.textContent.replace(/^\d+\s*·\s*/, '') : '' });
+      var code = fc.value.toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 16); fc.value = code;
+      write({ n: name, p: PLAT.indexOf(p.value) >= 0 ? p.value : '', fc: code, g: gi, gn: go ? go.textContent.replace(/^\d+\s*·\s*/, '') : '' });
       show();
     });
-    sec.querySelector('.tid-clear').addEventListener('click', function () { write(null); n.value = ''; p.value = ''; g.value = '0'; card.classList.remove('tid-done', 'tid-edit'); st.textContent = 'Forgotten. Nothing about you is stored now.'; });
+    sec.querySelector('.tid-clear').addEventListener('click', function () { write(null); n.value = ''; p.value = ''; fc.value = ''; g.value = '0'; card.classList.remove('tid-done', 'tid-edit'); st.textContent = 'Forgotten. Nothing about you is stored now.'; });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 })();
