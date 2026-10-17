@@ -19,6 +19,7 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 - **Expedition alerts.** A link under the expedition card opens the Weather station's alert settings for new-expedition and ends-in-24-hours notifications.
 - **Galactic Alliances.** A short guide to alliances from the Cosmos update, with the details (founding one, joining one, the three-alliance limit, alliance teleporters and how the rankings work) behind a **How alliances work** button. A **live top 5** leaderboard (re-checked every 15 minutes while the page is open) (in-game rank, members, stations and 24-hour changes) sits above it, courtesy of [Voyager's Haven](https://havenmap.online) by [u/IAmThe-Ekimo-1920](https://www.reddit.com/user/IAmThe-Ekimo-1920/); the full top 10 runs on the ATLAS alliance ticker.
 - **Recently charted ticker.** Under the hero buttons, a live strip headed *Live from the Galactic Map* says how many systems travellers charted there today and this week, then a slow tape of *name charted system · galaxy · time* links that fly straight to each system. It pauses on hover, keyboard focus or a finger press so a link is easy to tap, stands still for anyone who has reduced motion turned on, and **See all ›** opens the map's own Recently charted list. Read from the map's small `?recent=1` feed; only the names travellers chose to type are shown.
+- **Traveller Discoveries.** Right under Galactic Alliances: what other players charted on the Galactic Map this week. Systems, travellers and photos this week, a **Top surveyors this week** board in the same style as the alliance top 5, and the six latest systems as photo cards with who charted them, the portal glyphs and hex address, and a link that flies straight there (a swipeable row on phones). **See all discoveries ›** opens the full public page at [map.nomansskyhub.app/community](https://map.nomansskyhub.app/community). Read from the map's small `?discoveries=1` feed; bulk imports are left out and the section hides itself if there's nothing to show.
 - **Built for phones too.** On a phone the page is about 40% shorter: a sticky jump bar (Tools · Dialer · Translate · Alliances), the six tool cards in one swipeable row, the dialer's explainer and saved addresses folded behind toggles, the translator opening its NMS-text panel when you tap in, the expedition card tucked into the hero, and a back-to-top button. Desktop is unchanged.
 - **Short links.** `nomansskyhub.app/atlas`, `/weather`, `/theme`, `/translator` and `/map` jump to each tool.
 
@@ -27,6 +28,8 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 ![Six nodes, one network: image cards for every tool](screenshots/02-nodes.jpg)
 
 ![Galactic Alliances guide from the Cosmos update](screenshots/03-alliances.jpg)
+
+![Traveller Discoveries under Galactic Alliances: systems charted this week, top surveyors and the latest systems as photo cards](screenshots/07-traveller-discoveries.jpg)
 
 **New on the Theme Pack: make it yours.** Put your Traveller name and home portal glyphs on a wallpaper, wear one of today's real player-charted planets from the Weather Station, or keep a live expedition countdown on your home screen: [theme.nomansskyhub.app](https://theme.nomansskyhub.app/#studio-portal).
 

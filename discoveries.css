@@ -1,0 +1,40 @@
+/* No Man's Sky Hub — Traveller Discoveries section, under Galactic Alliances (2026-10-17).
+   Reuses the alliance section's look (al-sec, al-head, al-live, al-row, al-cta) so the two
+   read as one family; this file only adds the stats strip and the photo cards. */
+.dc-stats{max-width:720px;margin:0 auto 18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dc-stat{padding:12px 14px;border-radius:12px;border:1px solid rgba(0,229,255,.18);background:rgba(255,255,255,.03);text-align:center}
+.dc-stat b{display:block;font-family:var(--f-display);font-weight:800;font-size:clamp(24px,4vw,32px);letter-spacing:.1em;color:var(--white);font-variant-numeric:tabular-nums}
+.dc-stat span{display:block;margin-top:4px;font-family:var(--f-mono);font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
+.dc-stat:first-child b{color:var(--gold)}
+.dc-live .al-row{gap:10px}
+.dc-live .al-lname{font-family:var(--f-body);font-size:16px;font-weight:600}
+.dc-grid{max-width:1100px;margin:22px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.dc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dc-swipe{display:none;text-align:center;margin-top:6px;font-family:var(--f-mono);font-size:11px;letter-spacing:2px;color:var(--text-dim)}
+.dc-per::before{content:' · '}
+/* phones: one swipeable row instead of six stacked cards, same idea as the tool cards */
+@media (max-width:560px){
+  .dc-grid{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:8px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .dc-card{scroll-snap-align:start}
+  .dc-stats{gap:6px}.dc-stat{padding:10px 6px}.dc-stat span{font-size:9.5px;letter-spacing:1px}
+  .dc-swipe{display:block}
+  .dc-per{display:block}.dc-per::before{content:none}
+}
+.dc-card{display:grid;grid-template-rows:auto 1fr;min-width:0;border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;
+  border:1px solid rgba(0,229,255,.16);background:linear-gradient(180deg,rgba(15,22,32,.92),rgba(8,13,20,.92));transition:border-color .2s,box-shadow .2s,transform .2s}
+.dc-card:hover,.dc-card:focus-visible{border-color:var(--cyan);box-shadow:0 0 22px rgba(0,229,255,.22);outline:none}
+@media (prefers-reduced-motion:no-preference){.dc-card:hover{transform:translateY(-2px)}}
+.dc-shots{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;aspect-ratio:16/9;max-width:100%;background:#000}
+.dc-shots img{width:100%;height:100%;object-fit:cover;display:block}
+.dc-noshot{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;background:rgba(255,255,255,.03);font-family:var(--f-mono);font-size:11px;letter-spacing:3px;color:var(--text-dim)}
+.dc-body{padding:12px 14px 14px;display:grid;gap:7px;min-width:0}
+.dc-name{font-family:var(--f-body);font-weight:700;font-size:18px;line-height:1.2;color:var(--white);overflow-wrap:anywhere}
+.dc-meta{font-family:var(--f-body);font-size:14px;color:var(--text-dim)}
+.dc-meta b{color:var(--gold);font-weight:600}
+.dc-glyphs{display:flex;flex-wrap:wrap;align-items:center;gap:2px}
+.dc-glyphs img{width:16px;height:16px}
+.dc-glyphs span{margin-left:6px;font-family:var(--f-mono);font-size:12px;letter-spacing:2px;color:var(--text-dim)}
+.dc-go{font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan);text-transform:uppercase}
+.dc-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+.dc-note{max-width:720px;margin:14px auto 0;text-align:center;font-family:var(--f-mono);font-size:11px;color:var(--text-dim)}
