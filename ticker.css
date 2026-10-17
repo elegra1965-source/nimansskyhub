@@ -1,0 +1,39 @@
+/* No Man's Sky Hub — "Recently charted" ticker under the hero buttons (2026-10-17).
+   Live from the Galactic Map. Uses the Hub's own tokens. See ticker.js. */
+.tick{width:min(900px,100%);display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:stretch;
+  margin-top:6px;background:rgba(0,10,22,.62);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(0,229,255,.28);border-radius:8px;overflow:hidden;text-align:left}
+.tick[hidden]{display:none}
+.tick-lab{display:flex;align-items:center;gap:8px;padding:9px 14px;border-right:1px solid rgba(0,229,255,.2);
+  font-family:var(--f-mono);font-size:.74rem;letter-spacing:3px;color:var(--gold);white-space:nowrap}
+.tick-lab b{font-family:var(--f-display);font-weight:700;font-size:.9rem;letter-spacing:.1em;color:var(--white)}
+.tick-lab .dot{width:7px;height:7px}
+.tick-view{position:relative;overflow:hidden;min-width:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+.tick-track{display:flex;width:max-content;animation:tickRun var(--tick-dur,60s) linear infinite}
+.tick:hover .tick-track,.tick:focus-within .tick-track,.tick.held .tick-track{animation-play-state:paused}
+@keyframes tickRun{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-item{display:inline-flex;align-items:center;gap:8px;padding:9px 22px 9px 0;white-space:nowrap;
+  font-family:var(--f-body);font-size:1rem;color:var(--text);text-decoration:none}
+.tick-item::before{content:'◆';color:var(--cyan);font-size:.6rem;margin-left:4px}
+.tick-item b{color:var(--white);font-weight:700}
+.tick-item i{font-style:normal;color:var(--gold)}
+.tick-item small{font-family:var(--f-mono);font-size:.72rem;letter-spacing:1px;color:var(--text-dim)}
+.tick-item:hover i,.tick-item:focus-visible i{text-decoration:underline}
+.tick-item:focus-visible{outline:1px solid var(--cyan);outline-offset:-3px}
+.tick-all{display:flex;align-items:center;padding:9px 14px;border-left:1px solid rgba(0,229,255,.2);
+  font-family:var(--f-mono);font-size:.74rem;letter-spacing:3px;color:var(--cyan);text-decoration:none;white-space:nowrap}
+.tick-all:hover,.tick-all:focus-visible{background:rgba(0,229,255,.1);outline:none}
+@media (max-width:560px){
+  .tick{grid-template-columns:minmax(0,1fr) auto}
+  .tick-lab{grid-column:1/-1;border-right:0;border-bottom:1px solid rgba(0,229,255,.2);justify-content:center;padding:7px 10px;font-size:.68rem;letter-spacing:2px}
+  .tick-item{font-size:.95rem}
+  .tick-all{padding:9px 11px;letter-spacing:2px}
+}
+/* reduced motion: no scrolling tape, swipe through it instead */
+@media (prefers-reduced-motion:reduce){
+  .tick-view{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .tick-track{animation:none}
+  .tick-track .tick-dup{display:none}
+}
