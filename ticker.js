@@ -43,11 +43,23 @@
     if (!week.length) { box.hidden = true; return; }
 
     box.textContent = '';
+    // say plainly what is being counted: a first-time visitor doesn't know the map takes edits
     var lab = el('div', 'tick-lab');
-    lab.appendChild(el('span', 'dot'));
-    if (today) { lab.appendChild(el('b', null, String(today))); lab.appendChild(document.createTextNode(' CHARTED TODAY · ')); }
-    lab.appendChild(el('b', null, String(week.length)));
-    lab.appendChild(document.createTextNode(' THIS WEEK'));
+    var k = el('span', 'tl-k');
+    k.appendChild(el('span', 'dot'));
+    k.appendChild(document.createTextNode('LIVE FROM THE GALACTIC MAP'));
+    lab.appendChild(k);
+    var n = el('span', 'tl-n');
+    var sys = function (v) { return v === 1 ? ' SYSTEM' : ' SYSTEMS'; };
+    var part = function (num, words) { var p = el('span', 'tl-p'); p.appendChild(el('b', null, String(num))); p.appendChild(document.createTextNode(words)); return p; };
+    if (today) {
+      n.appendChild(part(today, sys(today) + ' CHARTED BY TRAVELLERS TODAY'));
+      n.appendChild(el('span', 'tl-sep', '·'));
+      n.appendChild(part(week.length, ' THIS WEEK'));
+    } else {
+      n.appendChild(part(week.length, sys(week.length) + ' CHARTED BY TRAVELLERS THIS WEEK'));
+    }
+    lab.appendChild(n);
     box.appendChild(lab);
 
     var view = el('div', 'tick-view');
@@ -63,7 +75,7 @@
     all.href = MAP + '/?recent=1'; all.target = '_blank'; all.rel = 'noopener';
     all.setAttribute('aria-label', 'See all recently charted systems on the Galactic Map');
     box.appendChild(all);
-    box.setAttribute('aria-label', (today ? today + ' systems charted today, ' : '') + week.length + ' this week on the Galactic Map');
+    box.setAttribute('aria-label', 'Live from the Galactic Map: ' + (today ? today + ' systems charted by travellers today, ' : '') + week.length + ' this week');
     box.hidden = false;
 
     // a steady, readable speed (~40px a second) whatever the number of items
