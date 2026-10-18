@@ -12,6 +12,10 @@
   var FEED = MAP + '/.netlify/functions/system-edit?recent=1';
   var GAL = ['Euclid','Hilbert Dimension','Calypso','Hesperius Dimension','Hyades','Ickjamatew','Budullangr','Kikolgallr','Eltiensleen','Eissentam','Elkupalos','Aptarkaba','Ontiniangp','Odiwagiri','Ogtialabi','Muhacksonto','Hitonskyer','Rerasmutul','Isdoraijung','Doctinawyra','Loychazinq','Zukasizawa','Ekwathore','Yeberhahne','Twerbetek','Sivarates','Eajerandal','Aldukesci','Wotyarogii','Sudzerbal','Maupenzhay','Sugueziume','Brogoweldian','Ehbogdenbu','Ijsenufryos','Nipikulha','Autsurabin','Lusontrygiamh','Rewmanawa','Ethiophodhe','Urastrykle','Xobeurindj','Oniijialdu','Wucetosucc','Ebyeloof','Odyavanta','Milekistri','Waferganh','Agnusopwit','Teyaypilny','Zalienkosm','Ladgudiraf','Mushonponte','Amsentisz','Fladiselm','Laanawemb','Ilkerloor','Davanossi','Ploehrliou','Corpinyaya','Leckandmeram','Quulngais','Nokokipsechl','Rinblodesa','Loydporpen','Ibtrevskip','Elkowaldb','Heholhofsko','Yebrilowisod','Husalvangewi',"Ovna'uesed",'Bahibusey','Nuybeliaure','Doshawchuc','Ruckinarkh','Thorettac','Nuponoparau','Moglaschil','Uiweupose','Nasmilete','Ekdaluskin','Hakapanasy','Dimonimba','Cajaccari','Olonerovo','Umlanswick','Henayliszm','Utzenmate','Umirpaiya','Paholiang','Iaereznika','Yudukagath','Boealalosnj','Yaevarcko','Coellosipp','Wayndohalou','Smoduraykl','Apmaneessu','Hicanpaav','Akvasanta','Tuychelisaor','Rivskimbe','Daksanquix','Kissonlin','Aediabiel','Ulosaginyik','Roclaytonycar','Kichiaroa','Irceauffey','Nudquathsenfe','Getaizakaal','Hansolmien','Bloytisagra','Ladsenlay','Luyugoslasr','Ubredhatk','Cidoniana','Jasinessa','Torweierf','Saffneckm','Thnistner','Dotusingg','Luleukous','Jelmandan','Otimanaso','Enjaxusanto','Sezviktorew','Zikehpm','Bephembah','Broomerrai','Meximicka','Venessika','Gaiteseling','Zosakasiro','Drajayanes','Ooibekuar','Urckiansi','Dozivadido','Emiekereks','Meykinunukur','Kimycuristh','Roansfien','Isgarmeso','Daitibeli','Gucuttarik','Enlaythie','Drewweste','Akbulkabi','Homskiw','Zavainlani','Jewijkmas','Itlhotagra','Podalicess','Hiviusauer','Halsebenk','Puikitoac','Gaybakuaria','Grbodubhe','Rycempler','Indjalala','Fontenikk','Pasycihelwhee','Ikbaksmit','Telicianses','Oyleyzhan','Uagerosat','Impoxectin','Twoodmand','Hilfsesorbs','Ezdaranit','Wiensanshe','Ewheelonc','Litzmantufa','Emarmatosi','Mufimbomacvi','Wongquarum','Hapirajua','Igbinduina','Wepaitvas','Sthatigudi','Yekathsebehn','Ebedeagurst','Nolisonia','Ulexovitab','Iodhinxois','Irroswitzs','Bifredait','Beiraghedwe','Yeonatlak','Cugnatachh','Nozoryenki','Ebralduri','Evcickcandj','Ziybosswin','Heperclait','Sugiuniam','Aaseertush','Uglyestemaa','Horeroedsh','Drundemiso','Ityanianat','Purneyrine','Dokiessmat','Nupiacheh','Dihewsonj','Rudrailhik','Tweretnort','Snatreetze','Iwundaracos','Digarlewena','Erquagsta','Logovoloin','Boyaghosganh','Kuolungau','Pehneldept','Yevettiiqidcon','Sahliacabru','Noggalterpor','Chmageaki','Veticueca','Vittesbursul','Nootanore','Innebdjerah','Kisvarcini','Cuzcogipper','Pamanhermonsu','Brotoghek','Mibittara','Huruahili','Raldwicarn','Ezdartlic','Badesclema','Isenkeyan','Iadoitesu','Yagrovoisi','Ewcomechio','Inunnunnoda','Dischiutun','Yuwarugha','Ialmendra','Reponudrle','Rinjanagrbo','Zeziceloh','Oeileutasc','Zicniijinis','Dugnowarilda','Neuxoisan','Ilmenhorn','Rukwatsuku','Nepitzaspru','Chcehoemig','Haffneyrin','Uliciawai','Tuhgrespod','Iousongola','Odyalutai'];
   var DAY = 864e5;
+  // 2026-10-19: medals for this week's top 3 trending systems + a "#1 trending" item (map trending feed)
+  var TREND = MAP + '/.netlify/functions/trending';
+  var MEDAL = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
+  var rank = {}, top1 = null;
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function plain(s) { var t = document.createElement('textarea'); t.innerHTML = String(s || ''); return t.value; }
@@ -28,6 +32,8 @@
     a.href = MAP + '/?arrival=1&addr=' + x.address + '&galaxy=' + x.galaxy;
     a.target = '_blank'; a.rel = 'noopener';
     if (dup) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
+    var r = rank[x.galaxy + ':' + x.address];
+    if (r && r <= 3) a.appendChild(el('span', 'tick-medal', MEDAL[r - 1]));
     a.appendChild(el('b', null, x.who));
     a.appendChild(document.createTextNode(' charted '));
     a.appendChild(el('i', null, x.name));
@@ -65,7 +71,18 @@
     var view = el('div', 'tick-view');
     var track = el('div', 'tick-track');
     var items = named.length ? named : [];
+    function trendItem(dup) {
+      var a = el('a', 'tick-item tick-trend' + (dup ? ' tick-dup' : ''));
+      a.href = MAP + '/?trending=1'; a.target = '_blank'; a.rel = 'noopener';
+      if (dup) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
+      a.appendChild(document.createTextNode('\uD83D\uDD25 #1 trending this week: '));
+      a.appendChild(el('b', null, plain(top1.name) || 'Unnamed system'));
+      a.appendChild(el('small', null, (GAL[top1.galaxy] || ('Galaxy ' + (top1.galaxy + 1)))));
+      return a;
+    }
+    if (top1) track.appendChild(trendItem(false));
     items.forEach(function (x) { track.appendChild(item(x, false)); });
+    if (top1) track.appendChild(trendItem(true));
     items.forEach(function (x) { track.appendChild(item(x, true)); }); // second copy makes the loop seamless
     if (!items.length) track.appendChild(el('span', 'tick-item', 'Travellers are charting the galaxy right now'));
     view.appendChild(track);
@@ -90,7 +107,11 @@
   box.addEventListener('touchstart', function () { clearTimeout(holdT); box.classList.add('held'); }, { passive: true });
   box.addEventListener('touchend', function () { clearTimeout(holdT); holdT = setTimeout(function () { box.classList.remove('held'); }, 3000); }, { passive: true });
 
-  fetch(FEED).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+  var trendP = fetch(TREND).then(function (r) { return r.ok ? r.json() : null; }).then(function (t) {
+    ((t && t.top) || []).forEach(function (x) { rank[x.key] = x.rank; });
+    top1 = (t && t.top && t.top[0]) || null;
+  }).catch(function () {});
+  fetch(FEED).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { return trendP.then(function () { return j; }); }).then(function (j) {
     var list = ((j && j.systems) || []).map(function (s) {
       return { t: Date.parse(s.editedAt), galaxy: s.galaxy | 0, address: String(s.address || '').toUpperCase(), name: plain(s.name) || 'an unnamed system', who: plain(s.editor).trim() };
     }).filter(function (x) { return x.t && /^[0-9A-F]{12}$/.test(x.address); });
