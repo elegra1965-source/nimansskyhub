@@ -35,7 +35,11 @@
     s.appendChild(head);
 
     var live = el('div', 'al-live tr-live');
-    var lh = el('div', 'al-live-h'); lh.appendChild(el('span', 'al-dot')); lh.appendChild(document.createTextNode((last ? 'LAST WEEK’S TOP ' : 'TOP ') + Math.max(top.length, 1) + (last ? '' : ' THIS WEEK'))); live.appendChild(lh);
+    var lh = el('div', 'al-live-h tr-h'); lh.appendChild(el('span', 'al-dot')); lh.appendChild(document.createTextNode((last ? '🔥 LAST WEEK’S TOP ' : '🔥 TRENDING · TOP ') + Math.max(top.length, 1)));
+    if (!last) lh.appendChild(el('span', 'tr-wk', '\u00A0THIS WEEK'));
+    var lb = el('a', 'tr-link', 'Leaderboard ›'); lb.href = MAP + '/?trending=1'; lb.target = '_blank'; lb.rel = 'noopener';
+    lb.setAttribute('aria-label', 'Open the full trending leaderboard on the Galactic Map');
+    lh.appendChild(lb); live.appendChild(lh);
     if (!top.length) live.appendChild(el('div', 'tr-empty', 'A new week has started — open some charted systems on the map!'));
     top.forEach(function (x) {
       var r = el('a', 'al-row al-lrow tr-row' + (x.rank <= 3 ? ' tr-medal' : ''));
@@ -64,10 +68,7 @@
       live.appendChild(lw);
     }
     s.appendChild(live);
-    var ctas = el('div', 'dc-ctas');
-    var all = el('a', 'al-cta', 'Open the leaderboard on the map ›'); all.href = MAP + '/?trending=1'; all.target = '_blank'; all.rel = 'noopener';
-    ctas.appendChild(all);
-    s.appendChild(ctas);
+    s.trLive = live;
     return s;
   }
 
@@ -79,12 +80,22 @@
       if (!nm || nm.querySelector('.tr-badge')) continue;
       var m = /addr=([0-9A-F]{12})&galaxy=(\d+)/.exec(c.getAttribute('href') || ''); if (!m) continue;
       var r = rank[m[2] + ':' + m[1]]; if (!r || r > 3) continue;
-      nm.appendChild(el('span', 'tr-badge', MEDAL[r - 1] + ' #' + r + (mode === 'last' ? ' last week' : ' Trending')));
+      nm.appendChild(el('span', 'tr-badge', MEDAL[r - 1] + ' #' + r + (mode === 'last' ? ' last week' : ' Most viewed')));
     }
   }
 
   function place(s) {
     var d = document.getElementById('discoveries'), al = document.getElementById('alliances');
+    // Preferred (2026-10-19, Tony): side by side with Top surveyors inside "Charted by
+    // travellers", photo tiles underneath -- less scrolling than a separate section.
+    var sv = d && d.querySelector('.dc-live');
+    if (sv && s.trLive) {
+      var pair = el('div', 'tr-pair');
+      sv.parentNode.insertBefore(pair, sv);
+      pair.appendChild(sv); pair.appendChild(s.trLive);
+      s.trLive.id = 'trending';
+      return;
+    }
     var after = d || al;
     if (after && after.parentNode) after.parentNode.insertBefore(s, after.nextSibling);
     else { var f = document.querySelector('footer'); if (f) f.parentNode.insertBefore(s, f); }
@@ -95,7 +106,7 @@
       mode = j.mode || 'week';
       (j.show || j.top || []).forEach(function (x) { rank[x.key] = x.rank; });
       var s = build(j);
-      // wait briefly for Charted by travellers so the order is Alliances → Discoveries → Trending
+      // wait briefly for Charted by travellers so Trending can sit beside Top surveyors
       var tries = 0;
       (function wait() {
         if (!document.getElementById('discoveries') && tries++ < 10) { setTimeout(wait, 400); return; }

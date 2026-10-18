@@ -20,3 +20,17 @@
   font-family:var(--f-display);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--gold);background:rgba(240,165,0,.08);vertical-align:3px;white-space:nowrap}
 .tick-item .tick-medal{margin-right:4px}
 .tick-item.tick-trend b{color:var(--gold)}
+/* 2026-10-19: Trending beside Top surveyors, tiles underneath; leaderboard link in the header row */
+.tr-pair{max-width:1100px;margin:0 auto 4px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.tr-pair .al-live{max-width:none;margin:0}
+@media (max-width:760px){.tr-pair{grid-template-columns:1fr;gap:12px}}
+.tr-h{flex-wrap:wrap}
+.tr-link{margin-left:auto;font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan);text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.tr-link:hover,.tr-link:focus-visible{color:var(--white);text-shadow:0 0 8px rgba(0,229,255,.7);outline:none}
+/* less scrolling: tighter spacing in Charted by travellers */
+#discoveries.al-sec{padding-top:36px;padding-bottom:30px}
+#discoveries .al-head{margin-bottom:14px}
+#discoveries .dc-stats{margin-bottom:14px}
+#discoveries .dc-grid{margin-top:16px}
+#discoveries .dc-ctas{margin-top:14px}
+@media (max-width:560px){.tr-wk{display:none}.tr-h{flex-wrap:nowrap}}
