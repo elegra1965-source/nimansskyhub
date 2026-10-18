@@ -34,3 +34,4 @@
 .tid-card.tid-done{padding-top:24px;padding-bottom:22px}
 .tid-sum-t{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .tid-l2{color:var(--gold);font-size:.74rem;letter-spacing:3px}
+.tid-fc{color:var(--cyan);white-space:nowrap}

@@ -38,8 +38,9 @@
     function show() {
       var o = read();
       st.innerHTML = o.n ? '✓ WELCOME, TRAVELLER <b>' + esc(o.n.toUpperCase()) + '</b>' + (o.p ? ' · ' + esc(o.p.toUpperCase()) : '') : '';
-      // line 1: name · platform; line 2: home galaxy, centred under them
-      sec.querySelector('.tid-sum-t').innerHTML = o.n ? '<span class="tid-l1">◈ <b>' + esc(o.n.toUpperCase()) + '</b>' + (o.p ? ' · ' + esc(o.p.toUpperCase()) : '') + '</span>' + (o.gn ? '<span class="tid-l2">' + esc(o.gn.toUpperCase()) + '</span>' : '') : '';
+      // 2026-10-18: line 1: name · friend code; line 2: platform · home galaxy
+      var l2 = [o.p, o.gn].filter(Boolean).map(function (x) { return esc(x.toUpperCase()); }).join('&nbsp;· ');
+      sec.querySelector('.tid-sum-t').innerHTML = o.n ? '<span class="tid-l1">◈ <b>' + esc(o.n.toUpperCase()) + '</b>' + (o.fc ? '&nbsp;· <span class="tid-fc" title="NMS friend code">' + esc(o.fc) + '</span>' : '') + '</span>' + (l2 ? '<span class="tid-l2">' + l2 + '</span>' : '') : '';
       card.classList.toggle('tid-done', !!o.n); card.classList.remove('tid-edit'); sum.setAttribute('aria-expanded', 'false');
     }
     sum.addEventListener('click', function () { var op = card.classList.toggle('tid-edit'); sum.setAttribute('aria-expanded', op ? 'true' : 'false'); if (op) n.focus(); });
