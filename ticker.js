@@ -15,7 +15,7 @@
   // 2026-10-19: medals for this week's top 3 trending systems + a "#1 trending" item (map trending feed)
   var TREND = MAP + '/.netlify/functions/trending';
   var MEDAL = ['\uD83E\uDD47', '\uD83E\uDD48', '\uD83E\uDD49'];
-  var rank = {}, top1 = null;
+  var rank = {}, top1 = null, tmode = 'week';
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function plain(s) { var t = document.createElement('textarea'); t.innerHTML = String(s || ''); return t.value; }
@@ -75,7 +75,7 @@
       var a = el('a', 'tick-item tick-trend' + (dup ? ' tick-dup' : ''));
       a.href = MAP + '/?trending=1'; a.target = '_blank'; a.rel = 'noopener';
       if (dup) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
-      a.appendChild(document.createTextNode('\uD83D\uDD25 #1 trending this week: '));
+      a.appendChild(document.createTextNode(tmode === 'last' ? '\uD83D\uDD25 Last week’s #1: ' : '\uD83D\uDD25 #1 trending this week: '));
       a.appendChild(el('b', null, plain(top1.name) || 'Unnamed system'));
       a.appendChild(el('small', null, (GAL[top1.galaxy] || ('Galaxy ' + (top1.galaxy + 1)))));
       return a;
@@ -108,8 +108,10 @@
   box.addEventListener('touchend', function () { clearTimeout(holdT); holdT = setTimeout(function () { box.classList.remove('held'); }, 3000); }, { passive: true });
 
   var trendP = fetch(TREND).then(function (r) { return r.ok ? r.json() : null; }).then(function (t) {
-    ((t && t.top) || []).forEach(function (x) { rank[x.key] = x.rank; });
-    top1 = (t && t.top && t.top[0]) || null;
+    tmode = (t && t.mode) || 'week';
+    var show = (t && (t.show || t.top)) || [];
+    show.forEach(function (x) { rank[x.key] = x.rank; });
+    top1 = show[0] || null;
   }).catch(function () {});
   fetch(FEED).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { return trendP.then(function () { return j; }); }).then(function (j) {
     var list = ((j && j.systems) || []).map(function (s) {

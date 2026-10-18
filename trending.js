@@ -13,7 +13,7 @@
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function plain(s) { var t = document.createElement('textarea'); t.innerHTML = String(s || ''); return t.value; }
   function link(x) { return MAP + '/?arrival=1&addr=' + x.address + '&galaxy=' + x.galaxy; }
-  var rank = {};
+  var rank = {}, mode = 'week';
 
   function move(m) {
     if (m === 'new') return el('span', 'tr-mv new', 'NEW');
@@ -23,17 +23,19 @@
   }
 
   function build(j) {
-    var top = j.top || [];
+    var top = j.show || j.top || [], last = mode === 'last';
     if (!top.length && !j.lastWeek) return null;
     var s = el('section', 'al-sec tr-sec'); s.id = 'trending';
     var head = el('div', 'al-head');
     head.appendChild(el('div', 'al-kicker', '◆ Galactic Map · Leaderboard'));
-    head.appendChild(el('h2', 'al-title', '🔥 Trending this week'));
-    head.appendChild(el('p', 'al-sub', 'The charted systems travellers opened most on the Galactic Map this week. Resets every Monday — chart yours and it could be next.'));
+    head.appendChild(el('h2', 'al-title', last ? '🔥 Last week’s final standings' : '🔥 Trending this week'));
+    head.appendChild(el('p', 'al-sub', last
+      ? 'A new week has started on the Galactic Map. These were last week’s most-viewed systems until this week’s list fills up.'
+      : 'The charted systems travellers opened most on the Galactic Map this week. Resets every Monday at midnight (UK) — chart yours and it could be next.'));
     s.appendChild(head);
 
     var live = el('div', 'al-live tr-live');
-    var lh = el('div', 'al-live-h'); lh.appendChild(el('span', 'al-dot')); lh.appendChild(document.createTextNode('TOP ' + Math.max(top.length, 1) + ' THIS WEEK')); live.appendChild(lh);
+    var lh = el('div', 'al-live-h'); lh.appendChild(el('span', 'al-dot')); lh.appendChild(document.createTextNode((last ? 'LAST WEEK’S TOP ' : 'TOP ') + Math.max(top.length, 1) + (last ? '' : ' THIS WEEK'))); live.appendChild(lh);
     if (!top.length) live.appendChild(el('div', 'tr-empty', 'A new week has started — open some charted systems on the map!'));
     top.forEach(function (x) {
       var r = el('a', 'al-row al-lrow tr-row' + (x.rank <= 3 ? ' tr-medal' : ''));
@@ -49,12 +51,11 @@
       r.appendChild(nm);
       var st = el('span', 'al-lstat');
       st.appendChild(document.createTextNode(x.views + (x.views === 1 ? ' view' : ' views')));
-      st.appendChild(el('br'));
-      st.appendChild(move(x.move));
+      if (!last) { st.appendChild(el('br')); st.appendChild(move(x.move)); }
       r.appendChild(st);
       live.appendChild(r);
     });
-    if (j.lastWeek) {
+    if (j.lastWeek && !last) {
       var lw = el('div', 'tr-last');
       lw.appendChild(document.createTextNode('Last week’s ' + MEDAL[0] + ' #1: '));
       var a = el('a', null, plain(j.lastWeek.name) || 'Unnamed system'); a.href = link(j.lastWeek); a.target = '_blank'; a.rel = 'noopener';
@@ -78,7 +79,7 @@
       if (!nm || nm.querySelector('.tr-badge')) continue;
       var m = /addr=([0-9A-F]{12})&galaxy=(\d+)/.exec(c.getAttribute('href') || ''); if (!m) continue;
       var r = rank[m[2] + ':' + m[1]]; if (!r || r > 3) continue;
-      nm.appendChild(el('span', 'tr-badge', MEDAL[r - 1] + ' #' + r + ' Trending'));
+      nm.appendChild(el('span', 'tr-badge', MEDAL[r - 1] + ' #' + r + (mode === 'last' ? ' last week' : ' Trending')));
     }
   }
 
@@ -91,7 +92,8 @@
 
   function run() {
     fetch(FEED).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
-      (j.top || []).forEach(function (x) { rank[x.key] = x.rank; });
+      mode = j.mode || 'week';
+      (j.show || j.top || []).forEach(function (x) { rank[x.key] = x.rank; });
       var s = build(j);
       // wait briefly for Charted by travellers so the order is Alliances → Discoveries → Trending
       var tries = 0;
