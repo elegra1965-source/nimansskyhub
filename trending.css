@@ -34,3 +34,7 @@
 #discoveries .dc-grid{margin-top:16px}
 #discoveries .dc-ctas{margin-top:14px}
 @media (max-width:560px){.tr-wk{display:none}.tr-h{flex-wrap:nowrap}}
+/* two-line box headings: title, then a small dim line underneath (2026-10-19) */
+.dc-htxt{display:flex;flex-direction:column;line-height:1.25}
+.dc-hsub{display:block;margin-top:3px;font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
+.al-live-h .al-dot{align-self:flex-start;margin-top:4px}

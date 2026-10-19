@@ -68,4 +68,10 @@
     -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 16px rgba(0,229,255,.25)}
   .to-top.show{opacity:1;pointer-events:auto;transform:none}
 }
+/* 2026-10-19 (Tony): less scrolling on phones -- every gap between sections is the
+   same, smaller size (was up to ~112px where two sections' padding stacked up). */
+@media (max-width:760px){
+  html body #nodes,html body #dialer,html body #translator,html body #alliances.al-sec,html body #discoveries.al-sec,html body #trending.al-sec,html body #traveller{padding-top:26px;padding-bottom:22px}
+  html body #alliances .al-head,html body #discoveries .al-head,html body #trending .al-head{margin-bottom:14px}
+}
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.node-dots button::before,.to-top,.jumpbar a{transition:none}}

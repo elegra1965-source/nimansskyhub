@@ -58,7 +58,7 @@
     s.appendChild(stats);
 
     var live = el('div', 'al-live dc-live');
-    var lh = el('div', 'al-live-h'); lh.appendChild(el('span', 'al-dot')); lh.appendChild(document.createTextNode('TOP SURVEYORS · MOST SAVES THIS WEEK')); live.appendChild(lh);
+    var lh = el('div', 'al-live-h'); lh.appendChild(el('span', 'al-dot')); var lt = el('span', 'dc-htxt', 'TOP SURVEYORS'); lt.appendChild(el('small', 'dc-hsub', 'Most saves this week')); lh.appendChild(lt); live.appendChild(lh);
     top.forEach(function (p, i) {
       var r = el('div', 'al-row al-lrow');
       r.appendChild(el('span', 'pos', String(i + 1)));

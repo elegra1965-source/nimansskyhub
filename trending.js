@@ -35,8 +35,9 @@
     s.appendChild(head);
 
     var live = el('div', 'al-live tr-live');
-    var lh = el('div', 'al-live-h tr-h'); lh.appendChild(el('span', 'al-dot')); lh.appendChild(document.createTextNode((last ? '🔥 LAST WEEK’S TOP ' : '🔥 TRENDING · TOP ') + Math.max(top.length, 1)));
-    if (!last) lh.appendChild(el('span', 'tr-wk', '\u00A0THIS WEEK'));
+    var lh = el('div', 'al-live-h tr-h'); lh.appendChild(el('span', 'al-dot')); var lt = el('span', 'dc-htxt', '🔥 TRENDING');
+    lt.appendChild(el('small', 'dc-hsub', last ? 'Last week’s final top ' + top.length : 'Most viewed this week'));
+    lh.appendChild(lt);
     var lb = el('a', 'tr-link', 'Leaderboard ›'); lb.href = MAP + '/?trending=1'; lb.target = '_blank'; lb.rel = 'noopener';
     lb.setAttribute('aria-label', 'Open the full trending leaderboard on the Galactic Map');
     lh.appendChild(lb); live.appendChild(lh);
