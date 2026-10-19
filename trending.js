@@ -14,6 +14,14 @@
   function plain(s) { var t = document.createElement('textarea'); t.innerHTML = String(s || ''); return t.value; }
   function link(x) { return MAP + '/?arrival=1&addr=' + x.address + '&galaxy=' + x.galaxy; }
   var rank = {}, mode = 'week';
+  function copyLink(e) {
+    e.preventDefault(); e.stopPropagation();
+    var b = this, url = b.getAttribute('data-link'), t = b.getAttribute('data-label') || b.textContent;
+    b.setAttribute('data-label', t);
+    function ok() { b.textContent = '✓ Link copied — paste it anywhere'; setTimeout(function () { b.textContent = t; }, 2500); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link:', url); });
+    else window.prompt('Copy this link:', url);
+  }
 
   function move(m) {
     if (m === 'new') return el('span', 'tr-mv new', 'NEW');
@@ -59,6 +67,13 @@
       if (!last) { st.appendChild(el('br')); st.appendChild(move(x.move)); }
       r.appendChild(st);
       live.appendChild(r);
+      // 2026-10-19 (Tony): one-tap link to this system's picture (medal for the top 3),
+      // for pasting where pictures can't be attached -- Reddit messages etc.
+      var cp = el('button', 'tr-copy', x.rank <= 3 ? '🔗 Copy medal picture link' : '🔗 Copy picture link');
+      cp.type = 'button';
+      cp.setAttribute('data-link', MAP + '/?rankcard=' + x.address + '&galaxy=' + gal(x.galaxy).replace(/[^A-Za-z0-9]/g, ''));
+      cp.addEventListener('click', copyLink);
+      live.appendChild(cp);
     });
     if (j.lastWeek && !last) {
       var lw = el('div', 'tr-last');

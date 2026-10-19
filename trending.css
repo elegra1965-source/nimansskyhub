@@ -38,3 +38,7 @@
 .dc-htxt{display:flex;flex-direction:column;line-height:1.25}
 .dc-hsub{display:block;margin-top:3px;font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
 .al-live-h .al-dot{align-self:flex-start;margin-top:4px}
+
+/* 2026-10-19: "Copy medal picture link" under each Trending row */
+.tr-copy{display:block;width:100%;margin:-4px 0 10px;padding:7px 10px;border:1px dashed rgba(242,184,75,.55);border-radius:6px;background:transparent;color:#f2b84b;font:inherit;font-size:12px;letter-spacing:.06em;text-align:left;cursor:pointer}
+.tr-copy:hover,.tr-copy:focus-visible{background:rgba(242,184,75,.1)}
