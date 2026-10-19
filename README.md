@@ -20,7 +20,9 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 - **Galactic Alliances.** A short guide to alliances from the Cosmos update, with the details (founding one, joining one, the three-alliance limit, alliance teleporters and how the rankings work) behind a **How alliances work** button. A **live top 5** leaderboard (re-checked every 15 minutes while the page is open) (in-game rank, members, stations and 24-hour changes) sits above it, courtesy of [Voyager's Haven](https://havenmap.online) by [u/IAmThe-Ekimo-1920](https://www.reddit.com/user/IAmThe-Ekimo-1920/); the full top 10 runs on the ATLAS alliance ticker.
 - **Recently charted ticker.** Under the hero buttons, a live strip headed *Live from the Galactic Map* says how many systems travellers charted there today and this week, then a slow tape of *name charted system · galaxy · time* links that fly straight to each system. It pauses on hover, keyboard focus or a finger press so a link is easy to tap, stands still for anyone who has reduced motion turned on, and **See all ›** opens the map's own Recently charted list. Read from the map's small `?recent=1` feed; only the names travellers chose to type are shown.
 - **Traveller Discoveries.** Right under Galactic Alliances: what other players charted on the Galactic Map this week. Systems, travellers and photos this week, a **Top surveyors this week** board in the same style as the alliance top 5, and the six latest systems as photo cards with who charted them, the portal glyphs and hex address, and a link that flies straight there (a swipeable row on phones). **See all discoveries ›** opens the full public page at [map.nomansskyhub.app/community](https://map.nomansskyhub.app/community). Read from the map's small `?discoveries=1` feed; bulk imports are left out and the section hides itself if there's nothing to show.
-- **Built for phones too.** On a phone the page is about 40% shorter: a sticky jump bar (Tools · Dialer · Translate · Alliances), the six tool cards in one swipeable row, the dialer's explainer and saved addresses folded behind toggles, the translator opening its NMS-text panel when you tap in, the expedition card tucked into the hero, and a back-to-top button. Desktop is unchanged.
+- **🔥 Trending this week.** Beside Top surveyors (people ranked by how much they charted), a **Trending** board ranks the *systems* travellers opened most on the Galactic Map this week: 🥇🥈🥉 medals, ▲/▼ arrows, view counts and the portal glyphs with the hex address, plus **Leaderboard ›** to the full top 10 on the map. Top-three systems also get a **#1 Most viewed** badge on their photo card and a medal in the ticker tape, which also shows *🔥 #1 trending this week*. It resets every Monday at midnight (UK). Until the new week has three entries, it shows last week's final standings. Read from the map's `trending` feed; private systems are never counted.
+- **Calm mode.** A small **Calm** switch in the bottom-left corner swaps the patterned and image backgrounds for a plain dark one, for anyone who finds the page busy. It's shared across the whole No Man's Sky Hub family (one switch turns it on for every site) and lives in `calm.js`.
+- **Built for phones too.** On a phone the page is about 40% shorter: a sticky jump bar (Tools · Dialer · Translate · Alliances · 🔥 Trending · My ID), the six tool cards in one swipeable row, the dialer's explainer and saved addresses folded behind toggles, the translator opening its NMS-text panel when you tap in, the expedition card tucked into the hero, and a back-to-top button. Desktop is unchanged.
 - **Short links.** `nomansskyhub.app/atlas`, `/weather`, `/theme`, `/translator` and `/map` jump to each tool.
 
 ![Recently charted ticker under the hero buttons: Live from the Galactic Map, 4 systems charted by travellers today, 12 this week, OldSaltySak charted Jura-Tempest Federation](screenshots/06-charted-ticker.jpg)
@@ -30,6 +32,10 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 ![Galactic Alliances guide from the Cosmos update](screenshots/03-alliances.jpg)
 
 ![Traveller Discoveries under Galactic Alliances: systems charted this week, top surveyors and the latest systems as photo cards](screenshots/07-traveller-discoveries.jpg)
+
+![Top surveyors beside Trending this week: medals, rank arrows, view counts and portal glyphs (real charted systems, example view counts)](screenshots/08-trending.jpg)
+
+<img src="screenshots/09-calm-mode.jpg" alt="The Hub on a phone with Calm mode off (left) and on (right): the image background is replaced by a plain dark one" width="560">
 
 **New on the Theme Pack: make it yours.** Put your Traveller name and home portal glyphs on a wallpaper, wear one of today's real player-charted planets from the Weather Station, or keep a live expedition countdown on your home screen: [theme.nomansskyhub.app](https://theme.nomansskyhub.app/#studio-portal).
 
@@ -55,6 +61,9 @@ Plain HTML, CSS and JavaScript with no build step and no framework. Deployed on 
 | `codex.js`, `expguide.js`, `expguide.css` | Expedition milestones & tips (NMS Wiki data; `codex.js` is shared with ATLAS) |
 | `mobile.css`, `mobile.js` | Phone layout: jump bar, swipeable tool cards, dialer folds, back-to-top |
 | `alliances.css`, `alliances.js` | The Galactic Alliances section, including the live top 5 |
+| `ticker.js`, `ticker.css`, `discoveries.js`, `discoveries.css` | Recently charted ticker and Traveller Discoveries (Galactic Map feeds) |
+| `trending.js`, `trending.css` | 🔥 Trending this week board, medals on cards and in the ticker |
+| `calm.js` | Calm mode switch, shared by every site in the family |
 | `_redirects` | Short links, plus same-origin proxies for the Galactic Atlas API (`/nms-api/`) and the Voyager's Haven alliance leaderboard (`/haven-api/alliances`) |
 | `sw.js` | Service worker for install and offline use |
 | `manifest.webmanifest` | App install details |
