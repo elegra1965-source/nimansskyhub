@@ -13,7 +13,7 @@
     font-family:var(--f-mono);font-size:.64rem;letter-spacing:2px;color:var(--cyan);text-decoration:none;white-space:nowrap;
     transition:background .2s,border-color .2s,color .2s}
   .jumpbar a.on{background:rgba(0,229,255,.14);border-color:var(--cyan);color:var(--white)}
-  #nodes,#dialer,#translator,#alliances,#traveller{scroll-margin-top:58px}
+  #nodes,#dialer,#translator,#alliances,#discoveries,#trending,#traveller{scroll-margin-top:58px}
 
   /* 2. six nodes: one swipeable row instead of six stacked cards */
   .nodes{padding:56px 16px 40px}

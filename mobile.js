@@ -21,7 +21,11 @@
     links.forEach(function (a) {
       var id = a.getAttribute('href').slice(1);
       var watch = function () { var t = document.getElementById(id); if (t) { io.observe(t); return true; } };
-      if (!watch()) setTimeout(watch, 1500); // #alliances is added by alliances.js
+      // #alliances, #discoveries etc. are added later by their scripts once their feeds
+      // load, which can take several seconds on a phone -- keep looking for up to 20 s
+      // (one try at 1.5 s used to miss them, leaving the previous tab highlighted).
+      var tries = 0;
+      (function retry() { if (!watch() && tries++ < 20) setTimeout(retry, 1000); })();
     });
   }
 
