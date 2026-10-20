@@ -50,7 +50,23 @@
     lb.setAttribute('aria-label', 'Open the full trending leaderboard on the Galactic Map');
     lh.appendChild(lb); live.appendChild(lh);
     if (!top.length) live.appendChild(el('div', 'tr-empty', 'A new week has started — open some charted systems on the map!'));
+    // 2026-10-20 (Tony): gold, silver and bronze stay open; 4th place down folds away to save scrolling
+    var more = null, moreBtn = null;
+    if (top.length > 3) {
+      more = el('div', 'tr-more'); more.id = 'trMore';
+      moreBtn = el('button', 'tr-more-btn'); moreBtn.type = 'button';
+      moreBtn.setAttribute('aria-controls', 'trMore');
+      var open = false; try { open = localStorage.getItem('nmsHubTrMore') === '1'; } catch (e) {}
+      var setOpen = function (o) {
+        more.hidden = !o; moreBtn.setAttribute('aria-expanded', o ? 'true' : 'false');
+        moreBtn.textContent = o ? 'Show top 3 only ▴' : 'Show places 4–' + top[top.length - 1].rank + ' ▾';
+        try { localStorage.setItem('nmsHubTrMore', o ? '1' : '0'); } catch (e) {}
+      };
+      moreBtn.addEventListener('click', function () { setOpen(more.hidden); });
+      setOpen(open);
+    }
     top.forEach(function (x) {
+      var box = (more && x.rank > 3) ? more : live;
       var r = el('a', 'al-row al-lrow tr-row' + (x.rank <= 3 ? ' tr-medal' : ''));
       r.href = link(x); r.target = '_blank'; r.rel = 'noopener';
       r.appendChild(el('span', 'pos', x.rank <= 3 ? MEDAL[x.rank - 1] : String(x.rank)));
@@ -66,15 +82,16 @@
       st.appendChild(document.createTextNode(x.views + (x.views === 1 ? ' view' : ' views')));
       if (!last) { st.appendChild(el('br')); st.appendChild(move(x.move)); }
       r.appendChild(st);
-      live.appendChild(r);
+      box.appendChild(r);
       // 2026-10-19 (Tony): one-tap link to this system's picture (medal for the top 3),
       // for pasting where pictures can't be attached -- Reddit messages etc.
       var cp = el('button', 'tr-copy', x.rank <= 3 ? '🔗 Copy medal picture link' : '🔗 Copy picture link');
       cp.type = 'button';
       cp.setAttribute('data-link', MAP + '/?rankcard=' + x.address + '&galaxy=' + gal(x.galaxy).replace(/[^A-Za-z0-9]/g, ''));
       cp.addEventListener('click', copyLink);
-      live.appendChild(cp);
+      box.appendChild(cp);
     });
+    if (more) { live.appendChild(moreBtn); live.appendChild(more); }
     if (j.lastWeek && !last) {
       var lw = el('div', 'tr-last');
       lw.appendChild(document.createTextNode('Last week’s ' + MEDAL[0] + ' #1: '));

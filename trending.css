@@ -42,3 +42,10 @@
 /* 2026-10-19: "Copy medal picture link" under each Trending row */
 .tr-copy{display:block;width:100%;margin:-4px 0 10px;padding:7px 10px;border:1px dashed rgba(242,184,75,.55);border-radius:6px;background:transparent;color:#f2b84b;font:inherit;font-size:12px;letter-spacing:.06em;text-align:left;cursor:pointer}
 .tr-copy:hover,.tr-copy:focus-visible{background:rgba(242,184,75,.1)}
+
+/* 2026-10-20: places 4+ fold away under a toggle (top 3 always shown) */
+.tr-more[hidden]{display:none}
+.tr-more{margin-top:10px}
+.tr-more-btn{display:block;width:100%;margin:2px 0 0;padding:10px 12px;border:1px solid rgba(0,229,255,.35);border-radius:8px;background:rgba(0,229,255,.05);
+  color:var(--cyan);font-family:var(--f-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-align:center}
+.tr-more-btn:hover,.tr-more-btn:focus-visible{background:rgba(0,229,255,.12);border-color:var(--cyan);outline:none}
