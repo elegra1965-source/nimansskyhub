@@ -139,10 +139,27 @@ img{max-width:100%}
 .exp-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 26px;padding:18px 24px;background:rgba(0,10,22,.88);backdrop-filter:blur(10px);border:1px solid rgba(240,165,0,.35);border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .exp-label{font-family:var(--f-mono);font-size:.76rem;letter-spacing:4px;color:var(--gold)}
 .exp-name{font-family:var(--f-display);font-size:1.02rem;color:var(--white);letter-spacing:1px}
+.exp-track[hidden],.exp-pct[hidden]{display:none}
 .exp-track{flex:1;min-width:180px;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
 .exp-fill{width:0;height:100%;background:linear-gradient(90deg,var(--gold),var(--orange));box-shadow:0 0 12px rgba(240,165,0,.7);transition:width 1.6s ease-out}
 .exp-pct{font-family:var(--f-mono);font-size:.85rem;letter-spacing:2px;color:var(--orange)}
 .exp-meta{flex-basis:100%;font-family:var(--f-mono);font-size:.74rem;letter-spacing:2px;color:var(--text-dim)}
+.res-row{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:12px 26px;margin-top:4px;padding-top:12px;border-top:1px solid rgba(240,165,0,.18);color:inherit;text-decoration:none}
+.res-row[hidden]{display:none}
+.res-label{font-family:var(--f-mono);font-size:.76rem;letter-spacing:4px;color:#b48cff}
+.res-tier{font-family:var(--f-display);font-size:1.02rem;letter-spacing:.12em;color:var(--white)}
+.res-track{flex:1;min-width:160px;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.res-fill{width:0;height:100%;background:linear-gradient(90deg,var(--orange),#b48cff);box-shadow:0 0 10px rgba(180,140,255,.55);transition:width 1.6s ease-out}
+.res-pct{font-family:var(--f-mono);font-size:.8rem;letter-spacing:2px;color:#b48cff}
+.res-meta{flex-basis:100%;font-family:var(--f-mono);font-size:.68rem;letter-spacing:1.5px;color:var(--text-dim)}
+.res-row:hover .res-meta,.res-row:focus-visible .res-meta{color:#b48cff}
+@media (max-width:560px){.res-label{flex-basis:100%}.res-tier{flex-basis:100%}.res-track{min-width:0}}
+@supports (grid-template-columns:subgrid){@media (min-width:1100px){
+.exp-bar{display:grid;grid-template-columns:max-content max-content minmax(80px,1fr) max-content;align-items:center}
+.exp-meta,.res-meta{grid-column:1/-1}
+.res-row{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:center;gap:12px 26px}
+.res-track,.exp-track{min-width:0}
+}}
 
 /* ── NODES ── */
 .nodes{position:relative;padding:96px 22px 80px;overflow:hidden}
@@ -377,8 +394,8 @@ HUB</h1>
   <div class="exp-bar">
     <span class="exp-label">◆ CURRENT EXPEDITION</span>
     <span class="exp-name" id="expName">CONNECTING TO GALACTIC ATLAS…</span>
-    <div class="exp-track"><div class="exp-fill" id="expFill"></div></div>
-    <span class="exp-pct" id="expPct">--%</span>
+    <div class="exp-track" hidden><div class="exp-fill" id="expFill"></div></div>
+    <span class="exp-pct" id="expPct" hidden>--%</span>
     <span class="exp-meta" id="expMeta"></span>
   </div>
 </section>
@@ -538,7 +555,7 @@ HUB</h1>
   window.scrollTo(0,0);
   window.addEventListener('load',function(){if(!DEEP)window.scrollTo(0,0);});
   /* things that should wait until the intro is out of the way */
-  var LIVE={};
+  var LIVE=window.NMS_LIVE={}; /* shared with research.js for the top-bar ticker */
   var revealed=false,onReveal=[];
   function whenRevealed(fn){if(revealed)fn();else onReveal.push(fn);}
   function toast(msg,ms){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},ms||2200);}
@@ -618,9 +635,10 @@ HUB</h1>
       var a=[],e=LIVE.exp,n=LIVE.nodes;
       if(e&&e.name){
         if(e.complete)a.push('◆ '+e.name+' — COMPLETE');
-        else{if(e.pct!=null)a.push('◆ '+e.name+' — '+e.pct+'% COMPLETE');else a.push('◆ '+e.name+' — LIVE');
+        else{a.push('◆ '+e.name+' — LIVE');
           if(e.time)a.push('◆ '+e.time);if(e.leader)a.push('◆ '+e.leader+' LEADING THE CHARGE');}
       }
+      var r=LIVE.research;if(r)a.push('◆ COMMUNITY RESEARCH — TIER '+r.tier+(r.of?' OF '+r.of:'')+' · '+r.pct.toFixed(1)+'%');
       if(n)a.push('◆ NODES '+n.up+' / '+n.n+' ONLINE · SIGNAL '+n.signal);
       a.push('◆ ATLAS UPLINK ESTABLISHED');
       return a;
@@ -655,9 +673,8 @@ HUB</h1>
     var gotLive=false;
     function unavailable(){
       $('expName').textContent=EXP.name;
-      $('expPct').textContent='N/A';$('expFill').style.width='0%';
       var tl=timeLeft();
-      $('expMeta').textContent='LIVE PROGRESS UNAVAILABLE — THE GALACTIC ATLAS ISN\'T RESPONDING, RETRYING SOON'+(tl?' · '+tl:'');
+      $('expMeta').textContent=tl||'LIVE DATA UNAVAILABLE — THE GALACTIC ATLAS ISN\'T RESPONDING, RETRYING SOON';
     }
     /* never leave the bar stuck on CONNECTING: show the fallback if nothing has arrived after 7s */
     setTimeout(function(){if(!gotLive&&/CONNECTING/.test($('expName').textContent))unavailable();},7000);
@@ -667,17 +684,15 @@ HUB</h1>
         var bestId=base,data=null;
         for(var i=res.length-1;i>=0;i--){if(res[i]){bestId=base+i;data=res[i];break;}}
         if(bestId!==EXP.mission){applyKnown(bestId);try{localStorage.setItem(LS_KEY,String(bestId));}catch(e){}}
-        var complete=(EXP.end&&(new Date(EXP.end)-new Date())<=0)||(data&&data.percentage>=100);
+        var complete=!!(EXP.end&&(new Date(EXP.end)-new Date())<=0); /* the Atlas % belongs to Community Research (research.js), not the expedition */
         var leader=null;
         if(data&&data.teamTotals&&data.teamTotals.length){var nm={blue:'KORVAX',green:'GEK',red:"VY'KEEN"},mx=-1;data.teamTotals.forEach(function(t){if((t.total||0)>mx){mx=t.total||0;leader=nm[t.team]||String(t.team||'').toUpperCase();}});}
         var pct=data&&data.percentage!=null?Math.min(100,parseFloat(data.percentage)):null;
         if(!data&&!complete){if(!gotLive)unavailable();LIVE.exp={name:EXP.name,time:timeLeft()};return;}
-        LIVE.exp={name:EXP.name,complete:!!complete,pct:pct!=null?pct.toFixed(1):null,time:timeLeft(),leader:leader};
+        LIVE.exp={name:EXP.name,complete:!!complete,time:timeLeft(),leader:leader};
         if(data)gotLive=true;
         $('expName').textContent=EXP.name;
-        if(complete){$('expPct').textContent='COMPLETE';$('expFill').style.width='100%';$('expMeta').textContent='STANDBY — AWAITING NEXT TRANSMISSION';return;}
-        $('expPct').textContent=pct!=null?pct.toFixed(1)+'%':'--%';
-        $('expFill').style.width=(pct!=null?pct:0)+'%';
+        if(complete){$('expMeta').textContent='EXPEDITION COMPLETE — STANDBY, AWAITING NEXT TRANSMISSION';return;}
         var meta=[];var tl=timeLeft();if(tl)meta.push(tl);if(leader)meta.push(leader+' LEADING THE CHARGE');
         $('expMeta').textContent=meta.join(' · ');
       });
@@ -961,6 +976,7 @@ HUB</h1>
 <script src="alliances.js"></script>
 <script src="codex.js"></script>
 <script src="expguide.js"></script>
+<script src="research.js"></script>
 <script src="traveller.js"></script>
 <script src="ticker.js"></script>
 <script src="discoveries.js"></script>

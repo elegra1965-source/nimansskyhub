@@ -10,7 +10,8 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 
 ## What it does
 
-- **Anomaly intro and cinematic hero** with a live clock and a status bar showing the current expedition, read live from the official Galactic Atlas feed.
+- **Anomaly intro and cinematic hero** with a live clock and a status bar showing the current expedition (name and time left).
+- **Community Research.** Inside the expedition card, a live strip shows the Space Anomaly's Community Research: the tier (e.g. *Tier 2 of 2*) and how far through it Travellers are, with a bar, exactly as on Hello Games' [Galactic Atlas](https://galacticatlas.nomanssky.com/poi/community-research) sidebar. As more universal data is submitted, the Quicksilver Synthesis Companion unlocks more collectables. Tap it to open the official page. It also appears in the top-bar ticker, rechecks every 10 minutes, and stays hidden if the Atlas isn't answering, so it never shows a wrong number.
 - **Six nodes, one network.** Image cards for every tool in the family (see below).
 - **Portal dialer.** Enter or tap a 12-glyph portal address, pick any of the 256 galaxies, and jump straight to that system on the Galactic Map.
 - **Speak like the Atlas.** A built-in alien-alphabet translator.
@@ -58,6 +59,7 @@ Plain HTML, CSS and JavaScript with no build step and no framework. Deployed on 
 | File | What it is |
 |---|---|
 | `index.html` | The whole page: layout, styles and logic |
+| `research.js` | Community Research strip in the expedition card (Galactic Atlas mission feed) |
 | `codex.js`, `expguide.js`, `expguide.css` | Expedition milestones & tips (NMS Wiki data; `codex.js` is shared with ATLAS) |
 | `mobile.css`, `mobile.js` | Phone layout: jump bar, swipeable tool cards, dialer folds, back-to-top |
 | `alliances.css`, `alliances.js` | The Galactic Alliances section, including the live top 5 |
@@ -81,7 +83,7 @@ All linked in the page footer and free to use in videos (monetised ones included
 
 ## Credits
 
-- Live expedition data: the official Galactic Atlas API by Hello Games
+- Live Community Research data: the official Galactic Atlas API by Hello Games
 - Expedition milestones: the [No Man's Sky Wiki](https://nomanssky.fandom.com) community (CC BY-SA)
 - Real worlds and alliance leaderboard (in ATLAS and NMS Weather): [Voyager's Haven](https://havenmap.online), built and run by [u/IAmThe-Ekimo-1920](https://www.reddit.com/user/IAmThe-Ekimo-1920/)
 - NMS Alphabet font by seontonppa (built with FontStruct), used with permission
