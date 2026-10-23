@@ -26,10 +26,10 @@ TIME    WHAT'S ON SCREEN
 1:15    Weather Station: exosuit readings and hazard protection
 1:24    Weather Station: daily survey of 8 real player-charted worlds, full scan with portal glyphs
 1:30    Weather Station: "Share my planet" card
-1:33    Alphabet Translator: typing English, shown in the NMS alien font
+1:33    Alphabet Translator: typing English, shown in the NMS font
 1:37    Glyph reader: line up one glyph in each of 12 boxes, the phone camera reads them by itself
 1:49    Theme Pack: home page and themed phone home screen
-1:54    Atlas Obsidian Theme: notes in the NMS alien font, hover to read in English
+1:54    Atlas Obsidian Theme: notes in the NMS font, hover to read in English
 1:57    End card: nomansskyhub.app, credits
 
 Note: the numbers shown (expedition progress, London weather) are sample data from the recording.
