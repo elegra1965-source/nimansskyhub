@@ -23,6 +23,7 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 - **Traveller Discoveries.** Right under Galactic Alliances: what other players charted on the Galactic Map this week. Systems, travellers and photos this week, a **Top surveyors this week** board in the same style as the alliance top 5, and the six latest systems as photo cards with who charted them, the portal glyphs and hex address, and a link that flies straight there (a swipeable row on phones). **See all discoveries ›** opens the full public page at [map.nomansskyhub.app/community](https://map.nomansskyhub.app/community). Read from the map's small `?discoveries=1` feed; bulk imports are left out and the section hides itself if there's nothing to show.
 - **🔥 Trending this week.** Beside Top surveyors (people ranked by how much they charted), a **Trending** board ranks the *systems* travellers opened most on the Galactic Map this week: 🥇🥈🥉 medals, ▲/▼ arrows, view counts and the portal glyphs with the hex address, plus **Leaderboard ›** to the full top 10 on the map. Each row has a **🔗 Copy medal picture link** button: the link opens that system's medal picture on the map, for pasting anywhere a picture can't be attached (Reddit messages, for example). Top-three systems also get a **#1 Most viewed** badge on their photo card and a medal in the ticker tape, which also shows *🔥 #1 trending this week*. It resets every Monday at midnight (UK). Until the new week has three entries, it shows last week's final standings. To save scrolling, only 🥇🥈🥉 show at first; **Show places 4–10** opens the rest (the Hub remembers your choice). Read from the map's `trending` feed; private systems are never counted.
 - **Calm mode.** A small **Calm** switch in the bottom-left corner swaps the patterned and image backgrounds for a plain dark one, for anyone who finds the page busy. It's shared across the whole No Man's Sky Hub family (one switch turns it on for every site) and lives in `calm.js`.
+- **Your language.** The 🌐 button switches the page between English, Español, Deutsch, Nederlands, Polski, Français, Português (Brasil) and Italiano. It sits with the clocks in the top bar (and in the jump bar on phones). The choice is shared by the whole No Man's Sky Hub family: pick it once and every site follows (a small cookie on `.nomansskyhub.app`, nothing goes to a server). On a first visit the page offers your phone's language once instead of switching by itself. Names, glyphs and portal addresses stay as they are. It lives in `lang.js` (the same file on every site), with one small pack per language in `lang/` and a font for Polish letters in `fonts/`.
 - **Built for phones too.** On a phone the page is about 40% shorter: a sticky jump bar (Tools · Dialer · Translate · Alliances · 🔥 Trending · My ID), the six tool cards in one swipeable row, the dialer's explainer and saved addresses folded behind toggles, the translator opening its NMS-text panel when you tap in, the expedition card tucked into the hero, and a back-to-top button. Desktop is unchanged.
 - **Short links.** `nomansskyhub.app/atlas`, `/weather`, `/theme`, `/translator` and `/map` jump to each tool.
 
@@ -35,6 +36,8 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 ![Traveller Discoveries under Galactic Alliances: systems charted this week, top surveyors and the latest systems as photo cards](screenshots/07-traveller-discoveries.jpg)
 
 ![Top surveyors beside Trending this week: medals, rank arrows, view counts and portal glyphs (real charted systems, example view counts)](screenshots/08-trending.jpg)
+
+<img src="screenshots/10-languages.jpg" alt="The Hub on a phone: the language picker (left) and the page in Español (right)" width="560">
 
 <img src="screenshots/09-calm-mode.jpg" alt="The Hub on a phone with Calm mode off (left) and on (right): the image background is replaced by a plain dark one" width="560">
 
@@ -66,6 +69,7 @@ Plain HTML, CSS and JavaScript with no build step and no framework. Deployed on 
 | `ticker.js`, `ticker.css`, `discoveries.js`, `discoveries.css` | Recently charted ticker and Traveller Discoveries (Galactic Map feeds) |
 | `trending.js`, `trending.css` | 🔥 Trending this week board, medals on cards and in the ticker |
 | `calm.js` | Calm mode switch, shared by every site in the family |
+| `lang.js`, `lang/`, `fonts/` | Language picker and translations, shared by every site in the family |
 | `_redirects` | Short links, plus same-origin proxies for the Galactic Atlas API (`/nms-api/`) and the Voyager's Haven alliance leaderboard (`/haven-api/alliances`) |
 | `sw.js` | Service worker for install and offline use |
 | `manifest.webmanifest` | App install details |

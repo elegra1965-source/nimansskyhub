@@ -12,6 +12,7 @@
   .jumpbar a{flex:1 0 auto;text-align:center;padding:9px 10px;border-radius:8px;border:1px solid rgba(0,229,255,.25);
     font-family:var(--f-mono);font-size:.64rem;letter-spacing:2px;color:var(--cyan);text-decoration:none;white-space:nowrap;
     transition:background .2s,border-color .2s,color .2s}
+  .jumpbar .jb-lang{flex:0 0 auto;width:38px;padding:0;border-radius:8px;border:1px solid rgba(0,229,255,.25);background:rgba(5,13,21,.6);font-size:1rem;cursor:pointer}
   .jumpbar a.on{background:rgba(0,229,255,.14);border-color:var(--cyan);color:var(--white)}
   #nodes,#dialer,#translator,#alliances,#discoveries,#trending,#traveller{scroll-margin-top:58px}
 
