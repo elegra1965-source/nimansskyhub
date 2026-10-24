@@ -306,6 +306,24 @@ footer .wrap{padding-top:40px;padding-bottom:48px;display:flex;flex-direction:co
 footer .share{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 footer .share .btn{padding:10px 16px;font-size:.64rem;font-weight:400}
 footer p{margin:0;max-width:70ch;font-size:.88rem;color:var(--text-dim)}
+/* Tour pop-up (2026-10-24): one TAKE A TOUR button replaces the five video/creator
+   links that used to sit in the footer (page is ~3 rows shorter). Videos stream
+   only when tapped; downloads for creators live inside the pop-up. */
+footer .share .btn-tour{border-color:var(--gold);color:var(--gold)}
+#tourDlg{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,6,12,.88)}
+#tourDlg.show{display:flex}
+#tourBox{position:relative;width:100%;max-width:440px;max-height:100%;overflow:auto;background:var(--bg-deep);border:1px solid var(--border-soft);border-radius:10px;padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px}
+#tourBox .tour-head{display:flex;align-items:center;justify-content:space-between}
+#tourBox .tour-head .kicker{font-size:.72rem;letter-spacing:4px}
+#tourClose{background:none;border:1px solid var(--border-soft);border-radius:6px;color:var(--cyan);font-size:1.1rem;line-height:1;width:40px;height:40px;cursor:pointer}
+#tourClose:hover{border-color:var(--cyan)}
+.tour-tabs{display:flex;gap:6px}
+.tour-tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--text-dim);font-family:var(--f-mono);font-size:.68rem;letter-spacing:2px;padding:8px 0;cursor:pointer}
+.tour-tabs button[aria-selected="true"]{color:var(--cyan);border-color:var(--cyan)}
+#tourVid{display:block;width:100%;aspect-ratio:9/16;max-height:calc(100vh - 230px);max-height:calc(100dvh - 230px);background:#000;border-radius:6px;object-fit:contain}
+.tour-dl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;font-family:var(--f-mono);font-size:.62rem;letter-spacing:2px;color:var(--text-dim)}
+.tour-dl a{color:var(--cyan);text-decoration:none;border:1px solid var(--border-soft);border-radius:4px;padding:6px 9px}
+.tour-dl a:hover{border-color:var(--cyan)}
 
 @media (max-width:760px){
   .hide-sm{display:none!important}
@@ -534,11 +552,7 @@ HUB</h1>
       <button class="btn" type="button" data-share="x">SHARE ON X</button>
       <button class="btn" type="button" data-share="reddit">REDDIT</button>
       <button class="btn" type="button" data-share="copy" id="shareCopy">COPY LINK</button>
-      <a class="btn" href="assets/nms-hub-portal-dialer-clip.mp4" download title="17-second clip of the portal dialer — free to use in videos and posts">▶ CREATOR CLIP</a>
-      <a class="btn" href="assets/nms-hub-tour.mp4" download title="Full video tour of every tool (2 min, portrait 1080x1920, original music, no Content ID claims) — free to use in videos, reviews and posts">▶ FULL TOUR VIDEO</a>
-      <a class="btn" href="assets/nms-hub-teaser-30s.mp4" download title="34-second teaser, portrait 1080x1920, original music — made for Shorts, Reels and TikTok">▶ 30s TEASER</a>
-      <a class="btn" href="assets/nms-hub-creator-pack.zip" download title="Creator pack: 19 clean 16:9 clips of every tool (1920x1080, 5-10 s, no text, no audio), free to use (60 MB)">⬇ CREATOR PACK</a>
-      <a class="btn" href="assets/nms-hub-tour-shotlist.txt" target="_blank" rel="noopener" title="Timestamps for every scene in the full tour, so you can find the clip you need">☰ SHOT LIST</a>
+      <button class="btn btn-tour" type="button" id="tourOpen" aria-haspopup="dialog" title="Watch what the Hub can do">▶ TAKE A TOUR</button>
     </div>
     <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)" translate="no">BUILT BY ELEGRA1965 · TRAVELLER T672B774 · FRIEND CODE MGD8-C6PP-XKFGT</div>
     <p>A free, fan-made project inspired by the aesthetic of No Man's Sky. Not affiliated with, sponsored by, or endorsed by Hello Games.</p>
@@ -546,6 +560,52 @@ HUB</h1>
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div id="tourDlg" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+  <div id="tourBox">
+    <div class="tour-head"><span class="kicker" id="tourTitle">◆ HUB TOUR</span><button type="button" id="tourClose" aria-label="Close">✕</button></div>
+    <div class="tour-tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-v="assets/nms-hub-teaser-30s.mp4">TEASER</button>
+      <button type="button" role="tab" aria-selected="false" data-v="assets/nms-hub-portal-dialer-clip.mp4">CLIP</button>
+      <button type="button" role="tab" aria-selected="false" data-v="assets/nms-hub-tour.mp4">FULL TOUR</button>
+    </div>
+    <video id="tourVid" controls playsinline preload="none" poster="assets/anomaly-poster.jpg"></video>
+    <div class="tour-dl"><span>FREE FOR CREATORS:</span><a id="tourDl" href="assets/nms-hub-teaser-30s.mp4" download>⬇ THIS VIDEO</a><a href="assets/nms-hub-creator-pack.zip" download title="Creator pack: 19 clean 16:9 clips of every tool (1920x1080, 5-10 s, no text, no audio), free to use (60 MB)">⬇ CREATOR PACK</a><a href="assets/nms-hub-tour-shotlist.txt" target="_blank" rel="noopener" title="Timestamps for every scene in the full tour, so you can find the clip you need">☰ SHOT LIST</a></div>
+  </div>
+</div>
+<script>
+/* Tour pop-up: X, tapping outside, Esc and the phone's Back button all close it,
+   the video stops, and the page is left exactly where it was. */
+(function(){
+  var dlg=document.getElementById('tourDlg'),vid=document.getElementById('tourVid'),dl=document.getElementById('tourDl'),
+      openBtn=document.getElementById('tourOpen'),tabs=dlg.querySelectorAll('.tour-tabs button'),pushed=false,scrollY=0;
+  if(!openBtn)return;
+  function pick(b,play){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',String(t===b));});
+    vid.src=b.getAttribute('data-v');dl.href=b.getAttribute('data-v');
+    if(play){var p=vid.play();if(p&&p.catch)p.catch(function(){});}
+  }
+  function open(){
+    scrollY=window.scrollY;dlg.classList.add('show');document.documentElement.style.overflow='hidden';
+    try{history.pushState({nmsTour:1},'');pushed=true;}catch(e){pushed=false;}
+    pick(dlg.querySelector('.tour-tabs button[aria-selected="true"]')||tabs[0],true);
+    document.getElementById('tourClose').focus({preventScroll:true});
+  }
+  function shut(fromPop){
+    if(!dlg.classList.contains('show'))return;
+    vid.pause();vid.removeAttribute('src');vid.load();
+    dlg.classList.remove('show');document.documentElement.style.overflow='';
+    window.scrollTo(0,scrollY);openBtn.focus({preventScroll:true});
+    if(pushed&&!fromPop){pushed=false;history.back();}else pushed=false;
+  }
+  openBtn.addEventListener('click',open);
+  document.getElementById('tourClose').addEventListener('click',function(){shut(false);});
+  dlg.addEventListener('click',function(e){if(e.target===dlg)shut(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&dlg.classList.contains('show'))shut(false);});
+  window.addEventListener('popstate',function(){if(dlg.classList.contains('show'))shut(true);});
+  tabs.forEach(function(b){b.addEventListener('click',function(){pick(b,true);});});
+})();
+</script>
 
 <script>
 (function(){
@@ -996,5 +1056,7 @@ HUB</h1>
 <script src="discoveries.js"></script>
 <script src="trending.js"></script>
 <script src="mobile.js"></script>
+<script src="/nms-tour.js?v=1"></script>
+<script>NMSTour.init({id:'hub',steps:[],start:function(){var b=document.getElementById('tourOpen');if(b)b.click();},waitFor:function(){var i=document.getElementById('intro');return !i||getComputedStyle(i).display==='none';}});</script>
 </body>
 </html>

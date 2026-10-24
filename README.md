@@ -45,6 +45,12 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 
 ![Portal wallpaper, planet of the day and the expedition countdown](screenshots/05-make-it-yours.jpg)
 
+## Take a tour
+
+One gold **▶ TAKE A TOUR** button in the footer opens a pop-up with the teaser, the portal-dialer clip and the full tour (videos only load when tapped). Creator downloads (this video, creator pack, shot list) live inside it. First-time visitors are offered it once by a small **New here?** box after the intro. Closes with ✕, tapping outside, Esc or the phone's Back button, and leaves the page exactly where it was.
+
+<img src="screenshots/07-take-a-tour.jpg" alt="Left: the New here? Take the tour prompt over the Hub. Right: the Hub tour pop-up playing the teaser with Teaser, Clip and Full tour tabs" width="560">
+
 ## The family
 
 | Tool | Link |
@@ -77,7 +83,7 @@ Plain HTML, CSS and JavaScript with no build step and no framework. Deployed on 
 
 ## Videos for creators
 
-All linked in the page footer and free to use in videos (monetised ones included), reviews and posts. The music in the tour and teaser is original, made for them (no third-party tracks or samples), so they won't trigger copyright / Content ID claims. A credit to nomansskyhub.app is appreciated.
+All in the footer's TAKE A TOUR pop-up and free to use in videos (monetised ones included), reviews and posts. The music in the tour and teaser is original, made for them (no third-party tracks or samples), so they won't trigger copyright / Content ID claims. A credit to nomansskyhub.app is appreciated.
 
 - `assets/nms-hub-tour.mp4`: 2-minute captioned tour of every tool, portrait 1080x1920, original music (FULL TOUR VIDEO)
 - `assets/nms-hub-teaser-30s.mp4`: 34-second captioned teaser for Shorts, Reels and TikTok (30s TEASER)
