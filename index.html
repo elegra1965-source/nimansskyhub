@@ -250,7 +250,11 @@ img{max-width:100%}
 .field>.legend{position:absolute;top:-10px;left:14px;padding:0 8px;background:var(--bg-deep);font-family:var(--f-mono);font-size:.68rem;letter-spacing:4px}
 .hexbox{align-self:stretch;display:flex;align-items:center;justify-content:center;min-height:58px;padding:0 16px;background:rgba(255,140,0,.05);border:1px solid rgba(255,140,0,.55);box-shadow:inset 0 0 18px rgba(255,140,0,.08);font-family:var(--f-mono)}
 .hexbox .legend{color:var(--orange)}
-#dialHex{font-size:1.35rem;letter-spacing:6px;color:var(--orange);text-shadow:0 0 10px rgba(255,140,0,.4)}
+#dialHex{font-size:1.35rem;letter-spacing:6px;color:var(--orange);text-shadow:0 0 10px rgba(255,140,0,.4);
+  /* 2026-10-24 (Tony): typeable like the Translator's hex box */
+  font-family:inherit;background:transparent;border:0;outline:0;width:100%;min-width:0;text-align:center;padding:6px 0;text-transform:uppercase}
+#dialHex::placeholder{color:rgba(255,140,0,.45);letter-spacing:1px;font-size:.95rem;text-shadow:none;text-transform:none}
+.hexbox:focus-within{border-color:var(--orange)}
 .slots{justify-self:center;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px;width:min(500px,88vw);padding:12px 10px 10px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.55);box-shadow:inset 0 0 18px rgba(0,229,255,.08)}
 .slots .legend{color:var(--cyan)}
 .slot{aspect-ratio:1/1;border:1px solid rgba(0,229,255,.18);border-radius:4px;background:rgba(0,229,255,.03);display:flex;align-items:center;justify-content:center}
@@ -498,7 +502,7 @@ HUB</h1>
       <div class="keyring" id="keyring"></div>
       <div class="readout" id="readout"><small>GLYPHS</small><b><span id="dialCount">00</span><i>/12</i></b><em id="dialStatus">TAP A GLYPH</em></div>
     </div>
-    <div class="field hexbox"><span class="legend" id="hexLegend">HEX CODE · EUCLID</span><span id="dialHex" translate="no">············</span></div>
+    <div class="field hexbox"><span class="legend" id="hexLegend">HEX CODE · EUCLID</span><input id="dialHex" type="text" inputmode="text" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="24" placeholder="Type or paste the hex" aria-label="Hex address"></div>
     <div class="field slots" id="dialSlots"><span class="legend">GLYPH ADDRESS</span></div>
     <span class="hex-note">The same address written as numbers and letters (0–9, A–F). The first glyph picks the planet (1–6) in that system — the Galactic Map shows the whole system, so it always lists it as 1.</span>
     <div class="dial-btns">
@@ -555,6 +559,7 @@ HUB</h1>
       <button class="btn btn-tour" type="button" id="tourOpen" aria-haspopup="dialog" title="Watch what the Hub can do">▶ TAKE A TOUR</button>
     </div>
     <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)" translate="no">BUILT BY ELEGRA1965 · TRAVELLER T672B774 · FRIEND CODE MGD8-C6PP-XKFGT</div>
+    <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)"><span>LIVE DATA:</span> <span translate="no"><a href="https://nmsalmanac.com" target="_blank" rel="noopener" style="color:var(--cyan)">NMS ALMANAC</a> · <a href="https://havenmap.online" target="_blank" rel="noopener" style="color:var(--cyan)">VOYAGER'S HAVEN</a> · <a href="https://galacticatlas.nomanssky.com" target="_blank" rel="noopener" style="color:var(--cyan)">GALACTIC ATLAS</a></span></div>
     <p>A free, fan-made project inspired by the aesthetic of No Man's Sky. Not affiliated with, sponsored by, or endorsed by Hello Games.</p>
   </div>
 </footer>
@@ -873,7 +878,7 @@ HUB</h1>
         if(n===undefined){slotEls[j].innerHTML='';hex+='·';}
         else{slotEls[j].innerHTML='<img src="'+src(n)+'" alt="'+NAMES[n]+'">';hex+=HEX.charAt(n);}
       }
-      $('dialHex').textContent=hex;
+      var hx=$('dialHex');if(document.activeElement!==hx)hx.value=addr.length?hex.replace(/·+$/,''):'';
       $('dialCount').textContent=(addr.length<10?'0':'')+addr.length;
       $('dialStatus').textContent=addr.length===12?'LOCKED · '+galaxyName().toUpperCase():(addr.length?'DIALLING…':'TAP A GLYPH');
       var full=addr.length===12;
@@ -886,6 +891,15 @@ HUB</h1>
       wasDone=full;
       syncMapLink();syncUrl();
     }
+    /* 2026-10-24 (Tony): type or paste the hex, like the Translator. Each digit fills the next glyph;
+       spaces, dashes and other characters are ignored. */
+    $('dialHex').addEventListener('input',function(){
+      var v=this.value.toUpperCase().replace(/[^0-9A-F]/g,'').slice(0,12);
+      if(this.value!==v)this.value=v;
+      addr=[];for(var q=0;q<v.length;q++)addr.push(HEX.indexOf(v.charAt(q)));
+      render();
+    });
+    $('dialHex').addEventListener('blur',function(){render();});
     function shareUrl(){return 'https://nomansskyhub.app/?g='+(gi+1)+'&a='+code();}
     function syncUrl(){
       if(pendingDeep||!window.history||!history.replaceState)return;

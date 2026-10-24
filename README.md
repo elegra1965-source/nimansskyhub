@@ -13,7 +13,7 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 - **Anomaly intro and cinematic hero** with a live clock and a status bar showing the current expedition (name and time left).
 - **Community Research.** Inside the expedition card, a live strip shows the Space Anomaly's Community Research: the tier (e.g. *Tier 2 of 2*) and how far through it Travellers are, with a bar, exactly as on Hello Games' [Galactic Atlas](https://galacticatlas.nomanssky.com/poi/community-research) sidebar. As more universal data is submitted, the Quicksilver Synthesis Companion unlocks more collectables. Tap it to open the official page. It also appears in the top-bar ticker, rechecks every 10 minutes, and stays hidden if the Atlas isn't answering, so it never shows a wrong number.
 - **Six nodes, one network.** Image cards for every tool in the family (see below).
-- **Portal dialer.** Enter or tap a 12-glyph portal address, pick any of the 256 galaxies, and jump straight to that system on the Galactic Map.
+- **Portal dialer.** Enter or tap a 12-glyph portal address, pick any of the 256 galaxies, and jump straight to that system on the Galactic Map. You can also type or paste the hex address straight into the **Hex code** box: each digit fills the next glyph.
 - **Speak like the Atlas.** A built-in NMS alphabet translator.
 - **Expedition milestones & tips.** Under the live expedition card, every milestone of the current expedition by phase — what to do, hints and rewards — read live from the No Man's Sky Wiki.
 - **Traveller ID.** Save your name, platform, home galaxy and (optionally) your NMS friend code once. The sister sites read it from a small cookie on `.nomansskyhub.app` (nothing goes to a server): ATLAS greets you by name, the Galactic Map opens in your home galaxy on a first visit, the Weather planet card carries your name, and the Theme Pack's portal wallpaper fills in your name, galaxy and friend code. "Forget me" removes it.
@@ -96,7 +96,10 @@ All in the footer's TAKE A TOUR pop-up and free to use in videos (monetised ones
 - Live Community Research data: the official Galactic Atlas API by Hello Games
 - Expedition milestones: the [No Man's Sky Wiki](https://nomanssky.fandom.com) community (CC BY-SA)
 - Real worlds and alliance leaderboard (in ATLAS and NMS Weather): [Voyager's Haven](https://havenmap.online), built and run by [u/IAmThe-Ekimo-1920](https://www.reddit.com/user/IAmThe-Ekimo-1920/)
+- Real planet and system data (on the Galactic Map and the Translator): [NMS Almanac](https://nmsalmanac.com), built and run by Borjomi ([u/Fosferus](https://www.reddit.com/user/Fosferus/))
 - NMS Alphabet font by seontonppa (built with FontStruct), used with permission
+
+The footer's **Live data** line links all three sources (NMS Almanac, Voyager's Haven and the Galactic Atlas).
 
 ## Using this code?
 
