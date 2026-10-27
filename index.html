@@ -559,7 +559,7 @@ HUB</h1>
     <div class="share">
       <button class="btn" type="button" data-share="x">SHARE ON X</button>
       <button class="btn" type="button" data-share="reddit">REDDIT</button>
-      <button class="btn" type="button" data-share="copy" id="shareCopy">COPY LINK</button>
+      <button class="btn" type="button" data-share="discord">DISCORD</button>
       <button class="btn btn-tour" type="button" id="tourOpen" aria-haspopup="dialog" title="Watch what the Hub can do">▶ TAKE A TOUR</button>
     </div>
     <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)" translate="no">BUILT BY ELEGRA1965 · TRAVELLER T672B774 · FRIEND CODE MGD8-C6PP-XKFGT</div>
@@ -1028,7 +1028,9 @@ HUB</h1>
       var t=b.getAttribute('data-share');
       if(t==='x')window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent(url),'_blank');
       else if(t==='reddit')window.open('https://www.reddit.com/submit?url='+encodeURIComponent(url)+'&title='+encodeURIComponent("No Man's Sky Hub — free NMS tools"),'_blank');
-      else copy(url).then(function(){toast('✓ LINK COPIED');});
+      /* 2026-10-27 (Tony): Discord has no share link -- copy the message + link, then open
+         Discord so they pick the server / DM to paste it in (same idea as Reddit) */
+      else if(t==='discord'){copy(txt+' '+url).then(function(){toast('✓ COPIED — PASTE IT IN ANY SERVER OR DM',4500);});window.open('https://discord.com/app','_blank');}
     });});
   })();
 
