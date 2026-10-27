@@ -66,7 +66,16 @@
       r.appendChild(el('span', 'al-lstat', p.saves + (p.saves === 1 ? ' save' : ' saves') + ' · ' + p.sys + (p.sys === 1 ? ' system' : ' systems')));
       live.appendChild(r);
     });
-    s.appendChild(live);
+    // 2026-10-27 (Tony): fill the space under Top surveyors with a 3-step "get on the board" box;
+    // the two buttons and the note that sat at the bottom of the section now live in it.
+    var col = el('div', 'dc-col'); col.appendChild(live);
+    var join = el('div', 'al-live dc-join');
+    var jh = el('div', 'al-live-h'); jh.appendChild(el('span', 'al-dot')); var jt = el('span', 'dc-htxt', 'GET ON THE BOARD'); jt.appendChild(el('small', 'dc-hsub', 'Your name here in 3 steps')); jh.appendChild(jt); join.appendChild(jh);
+    var ol = el('ol', 'dc-steps');
+    ['Open any system on the Galactic Map', 'Tap Edit system, add your name', '📷 Add a station photo — it shows here'].forEach(function (t) { ol.appendChild(el('li', null, t)); });
+    join.appendChild(ol);
+    col.appendChild(join);
+    s.appendChild(col);
 
     var grid = el('div', 'dc-grid');
     latest.forEach(function (x) {
@@ -93,12 +102,11 @@
     s.appendChild(grid);
     if (latest.length > 1) s.appendChild(el('div', 'dc-swipe', 'SWIPE FOR MORE ›'));
 
-    var ctas = el('div', 'dc-ctas');
+    var ctas = el('div', 'dc-ctas dc-join-ctas');
     var all = el('a', 'al-cta', 'See all discoveries ›'); all.href = MAP + '/community'; all.target = '_blank'; all.rel = 'noopener';
     var add = el('a', 'al-cta', 'Chart your own system'); add.href = MAP + '/'; add.target = '_blank'; add.rel = 'noopener';
     ctas.appendChild(all); ctas.appendChild(add);
-    s.appendChild(ctas);
-    s.appendChild(el('p', 'dc-note', 'Open any system on the Galactic Map and tap Edit system (or 📷 Add your station photo) to see your name here.'));
+    join.appendChild(ctas);
     return s;
   }
 

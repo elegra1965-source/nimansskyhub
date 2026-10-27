@@ -38,3 +38,16 @@
 .dc-go{font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan);text-transform:uppercase}
 .dc-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
 .dc-note{max-width:720px;margin:14px auto 0;text-align:center;font-family:var(--f-mono);font-size:11px;color:var(--text-dim)}
+
+/* 2026-10-27: left column (Top surveyors + Get on the board) beside Trending */
+.dc-col{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-width:0}
+.dc-col .al-live{margin:0;max-width:none}
+.tr-pair .dc-col{max-width:none;margin:0}
+.dc-steps{list-style:none;margin:4px 0 0;padding:0;counter-reset:dcs}
+.dc-steps li{counter-increment:dcs;display:flex;gap:12px;align-items:baseline;padding:10px 12px;margin-bottom:8px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);font-family:var(--f-body);font-size:15px;font-weight:600;color:var(--text);min-width:0;overflow-wrap:anywhere}
+.dc-steps li::before{content:counter(dcs);font-family:var(--f-display);font-weight:800;color:var(--gold);letter-spacing:.1em;min-width:1.4ch;flex:none}
+#discoveries .dc-join-ctas{margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:stretch}
+.dc-join-ctas .al-cta{flex:1 1 200px;justify-content:center;text-align:center;margin:0;padding:10px 10px;font-size:11px;letter-spacing:.14em;white-space:nowrap}
+@media (max-width:760px){.dc-steps li{padding:3px 2px;margin:0;border:0;background:none;font-size:14px;line-height:1.35}
+  .dc-steps{margin:2px 0 8px}.dc-col{gap:12px}}
+@media (max-width:760px){.dc-join-ctas .al-cta{flex-basis:100%;white-space:normal}}

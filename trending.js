@@ -121,7 +121,7 @@
     var d = document.getElementById('discoveries'), al = document.getElementById('alliances');
     // Preferred (2026-10-19, Tony): side by side with Top surveyors inside "Charted by
     // travellers", photo tiles underneath -- less scrolling than a separate section.
-    var sv = d && d.querySelector('.dc-live');
+    var sv = d && (d.querySelector('.dc-col') || d.querySelector('.dc-live'));
     if (sv && s.trLive) {
       var pair = el('div', 'tr-pair');
       sv.parentNode.insertBefore(pair, sv);
