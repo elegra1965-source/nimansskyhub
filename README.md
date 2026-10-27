@@ -55,7 +55,9 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 
 ## Take a tour
 
-One gold **▶ TAKE A TOUR** button in the footer opens a pop-up with the teaser, the portal-dialer clip and the full tour (videos only load when tapped). Creator downloads (this video, creator pack, shot list) live inside it. First-time visitors are offered it once by a small **New here?** box after the intro. Closes with ✕, tapping outside, Esc or the phone's Back button, and leaves the page exactly where it was.
+One gold **▶ TAKE A TOUR** button in the footer starts a 7-step tour of the page itself (the same spotlight tour as Atlas, Weather, Translator and Theme): the six tool cards, the portal dialer, the translator, Top surveyors + Get on the board, 🔥 Trending, My Traveller ID and the 🌐 language button. Skip, Back and Next on every step; Esc or the phone's Back button closes it. The last step has **▶ Watch the tools in action**, which opens the video pop-up with the teaser, the portal-dialer clip and the full tour (videos only load when tapped). Creator downloads (this video, creator pack, shot list) live inside it. First-time visitors are offered the tour once by a small **New here?** box after the intro. The tour lives in `nms-tour.js` (shared by every site).
+
+<img src="screenshots/13-step-tour.jpg" alt="The Hub tour: step 4 (Top surveyors) on desktop, and the last step on a phone with the Watch the tools in action button" width="560">
 
 <img src="screenshots/07-take-a-tour.jpg" alt="Left: the New here? Take the tour prompt over the Hub. Right: the Hub tour pop-up playing the teaser with Teaser, Clip and Full tour tabs" width="560">
 

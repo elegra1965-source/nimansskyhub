@@ -560,7 +560,7 @@ HUB</h1>
       <button class="btn" type="button" data-share="x">SHARE ON X</button>
       <button class="btn" type="button" data-share="reddit">REDDIT</button>
       <button class="btn" type="button" data-share="discord">DISCORD</button>
-      <button class="btn btn-tour" type="button" id="tourOpen" aria-haspopup="dialog" title="Watch what the Hub can do">▶ TAKE A TOUR</button>
+      <button class="btn btn-tour" type="button" id="tourOpen" aria-haspopup="dialog" title="Take a quick tour of the Hub">▶ TAKE A TOUR</button>
     </div>
     <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)" translate="no">BUILT BY ELEGRA1965 · TRAVELLER T672B774 · FRIEND CODE MGD8-C6PP-XKFGT</div>
     <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)"><span>LIVE DATA:</span> <span translate="no"><a href="https://nmsalmanac.com" target="_blank" rel="noopener" style="color:var(--cyan)">NMS ALMANAC</a> · <a href="https://havenmap.online" target="_blank" rel="noopener" style="color:var(--cyan)">VOYAGER'S HAVEN</a> · <a href="https://galacticatlas.nomanssky.com" target="_blank" rel="noopener" style="color:var(--cyan)">GALACTIC ATLAS</a></span></div>
@@ -607,7 +607,8 @@ HUB</h1>
     window.scrollTo(0,scrollY);openBtn.focus({preventScroll:true});
     if(pushed&&!fromPop){pushed=false;history.back();}else pushed=false;
   }
-  openBtn.addEventListener('click',open);
+  /* 2026-10-27: TAKE A TOUR now starts the step-by-step tour (nms-tour.js); its last step opens these videos */
+  window.NMSHubVideos=open;
   document.getElementById('tourClose').addEventListener('click',function(){shut(false);});
   dlg.addEventListener('click',function(e){if(e.target===dlg)shut(false);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&dlg.classList.contains('show'))shut(false);});
@@ -1076,7 +1077,18 @@ HUB</h1>
 <script src="discoveries.js?v=20261027"></script>
 <script src="trending.js?v=20261027"></script>
 <script src="mobile.js"></script>
-<script src="/nms-tour.js?v=1"></script>
-<script>NMSTour.init({id:'hub',steps:[],start:function(){var b=document.getElementById('tourOpen');if(b)b.click();},waitFor:function(){var i=document.getElementById('intro');return !i||getComputedStyle(i).display==='none';}});</script>
+<script src="/nms-tour.js?v=2"></script>
+<script>NMSTour.init({id:'hub',launchers:['#tourOpen'],
+  steps:[
+    {sel:'.grid-nodes',title:'Six free tools',body:'Tap a card to open that tool. Each one works on phone and PC and installs like an app.'},
+    {sel:'.ring-wrap',title:'Portal dialer',body:'Tap the glyphs round the ring or type the hex code, then copy, share or open it on the Galactic Map.'},
+    {sel:'.tr-box',title:'Translator',body:'Type English and see it written in the NMS font.'},
+    {sel:'#discoveries .dc-col',title:'Top surveyors',body:'Who charted the most on the Galactic Map this week. Follow the 3 steps to get your name here.'},
+    {sel:'#trending',title:'🔥 Trending',body:'The systems travellers opened most this week. Tap one to fly there.'},
+    {sel:'#traveller',title:'My Traveller ID',body:'Save your name, platform and home galaxy once. ATLAS greets you by name and the Galactic Map opens in your home galaxy.'},
+    {sel:['#langBtn','.jb-lang'],top:true,title:'Your language',body:'Pick your language once and every site in the family follows. Want to see the tools in action? Watch the video tour.'}
+  ],
+  end:{label:'▶ WATCH THE TOOLS IN ACTION',run:function(){if(window.NMSHubVideos)window.NMSHubVideos();}},
+  waitFor:function(){var i=document.getElementById('intro');return !i||getComputedStyle(i).display==='none';}});</script>
 </body>
 </html>
