@@ -1,3 +1,7 @@
+# Old Netlify address -> the family domain (2026-10-27). A real 301 so search engines move the old address's ranking here.
+# Must stay first so it wins over the rules below.
+https://nomansskyhub.netlify.app/*  https://nomansskyhub.app/:splat  301!
+
 # 2026-10-04: targets now the real subdomains (atlas./weather./theme./translator./map.nomansskyhub.app).
 # Short/memorable paths through nomansskyhub.app, tunnelling to each
 # sister project's real Netlify address. Added 2026-08-18 per Tony's ask —

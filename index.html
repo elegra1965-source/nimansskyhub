@@ -7,8 +7,9 @@
 <title>No Man's Sky Hub — Free Tools: Atlas AI, Map &amp; Portal Dialer</title>
 <script src="/calm.js?v=1"></script>
 <script src="/lang.js?v=2"></script>
-<script src="/nms-update.js?v=1" defer></script>
-<meta name="description" content="Six free No Man's Sky tools in one place: a voice AI guide, a 3D galactic map, a portal glyph dialer, a glyph translator, NMS-style weather and a theme pack. No account needed.">
+<script src="/nms-update.js?v=2" defer></script>
+<meta name="robots" content="max-image-preview:large">
+<meta name="description" content="Six free No Man's Sky tools in one place: a voice AI guide, 3D galactic map, portal glyph dialer, glyph translator, NMS weather and a theme pack. No account.">
 <link rel="canonical" href="https://nomansskyhub.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="No Man's Sky Hub">
@@ -26,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"No Man's Sky Hub","alternateName":"NMS Hub","url":"https://nomansskyhub.app/","description":"Six free fan-made tools for No Man's Sky travellers.","author":{"@type":"Person","name":"elegra1965"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "Free No Man's Sky tools", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Atlas AI — No Man's Sky voice companion", "url": "https://atlas.nomansskyhub.app/"}, {"@type": "ListItem", "position": 2, "name": "NMS Galactic Map — 3D galaxy map & portal address decoder", "url": "https://map.nomansskyhub.app/"}, {"@type": "ListItem", "position": 3, "name": "NMS Alphabet Translator & Portal Glyph Reader", "url": "https://translator.nomansskyhub.app/"}, {"@type": "ListItem", "position": 4, "name": "Atlas Weather Station — weather as a No Man's Sky planet scan", "url": "https://weather.nomansskyhub.app/"}, {"@type": "ListItem", "position": 5, "name": "No Man's Sky Theme Pack — icons, wallpapers, widgets & NMS font", "url": "https://theme.nomansskyhub.app/"}, {"@type": "ListItem", "position": 6, "name": "Traveller Discoveries — systems charted this week", "url": "https://map.nomansskyhub.app/community"}]}</script>
 <script>try{if(localStorage.getItem('nmsHubIntroSeen')==='1'&&!/[?&]intro=1/.test(location.search))document.documentElement.className+=' intro-seen';}catch(e){}</script>
+<link rel="preload" as="image" href="assets/bg-neon.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -90,14 +92,16 @@ img{max-width:100%}
 /* ── HERO ── */
 .hero{position:relative;height:max(760px,100vh);max-height:960px;overflow:hidden;background:#000}
 .slide{position:absolute;inset:-2%;background-size:cover;background-position:center;opacity:0;animation:slide 36s linear infinite}
-.s1{background-image:url('assets/bg-neon.webp');animation-delay:0s}.s2{background-image:url('assets/bg1-hero.webp');animation-delay:9s}
+.s1{background-image:url('assets/bg-neon.webp');animation-delay:-1.44s}.s2{background-image:url('assets/bg1-hero.webp');animation-delay:9s}
 .s3{background-image:url('assets/bg13.webp');animation-delay:18s}.s4{background-image:url('assets/bg9.webp');animation-delay:27s}
 @keyframes slide{0%{opacity:0;transform:scale(1.12)}4%{opacity:1}25%{opacity:1}30%{opacity:0;transform:scale(1)}100%{opacity:0;transform:scale(1)}}
 .hero .vig{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(0,8,16,.25),rgba(0,6,12,.75) 70%,rgba(7,11,17,1) 100%)}
 .hero .fade{position:absolute;left:0;right:0;bottom:0;height:260px;background:linear-gradient(180deg,transparent,var(--bg))}
 .hero .lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.14) 2px 4px);pointer-events:none}
-.hero-scan{position:absolute;left:0;right:0;height:120px;background:linear-gradient(180deg,transparent,rgba(0,229,255,.07),transparent);animation:scanDown 7s linear infinite;pointer-events:none}
-@keyframes scanDown{from{top:-10%}to{top:110%}}
+/* 2026-10-27: the scan line moved by animating top, which counted as layout shift (CLS) on every frame -- now a transform on a full-height layer */
+.hero-scan{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-scan::before{content:"";position:absolute;left:0;right:0;top:0;height:100%;background:linear-gradient(180deg,transparent,rgba(0,229,255,.07),transparent) no-repeat;background-size:100% 120px;animation:scanDown 7s linear infinite;will-change:transform}
+@keyframes scanDown{from{transform:translateY(calc(-10% - 120px))}to{transform:translateY(110%)}}
 .hud-frame{position:absolute;inset:28px 34px;pointer-events:none}
 .hud-frame .corner{width:46px;height:46px}
 .hud-frame .c-tl{top:0;left:0}.hud-frame .c-tr{top:0;right:0}.hud-frame .c-bl{bottom:0;left:0}.hud-frame .c-br{bottom:0;right:0}
@@ -353,7 +357,7 @@ footer .share .btn-tour{border-color:var(--gold);color:var(--gold)}
 @media (max-width:480px){.dial-btns{grid-template-columns:repeat(2,minmax(0,1fr))}.brand-name{max-width:92px;font-size:.6rem}.topbar{left:22px;right:22px;gap:10px}.clocks{gap:10px}.clock b{font-size:.86rem;letter-spacing:1px}.clock small{font-size:.58rem}.uplink{font-size:.68rem;letter-spacing:3px}.up-gal{display:none}}
 @media (prefers-reduced-motion:reduce){
   .brand .mark img,.brand .mark::before{animation:none!important}
-  .slide,.glitch::before,.glitch::after,.hero-scan,.scroll-hint,.keyring.done,.drift-l,.drift-r,.portal .rim,.portal.open .spark,.portal.open .wave,#introEnter,.cursor{animation:none!important}
+  .slide,.glitch::before,.glitch::after,.hero-scan,.hero-scan::before,.scroll-hint,.keyring.done,.drift-l,.drift-r,.portal .rim,.portal.open .spark,.portal.open .wave,#introEnter,.cursor{animation:none!important}
   .s1{opacity:1}
   .portal.open .surface{animation:none;transform:none;opacity:1}
 }
