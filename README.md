@@ -8,7 +8,23 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 
 <p align="center"><a href="https://nomansskyhub.app/assets/nms-hub-tour.mp4"><img src="screenshots/04-tour-preview.gif" alt="Tour preview: portal dialer, ATLAS, the Galactic Map, the camera glyph reader and the Weather Station" width="300"></a><br><b><a href="https://nomansskyhub.app/assets/nms-hub-tour.mp4">▶ Watch the full 2-minute tour</a></b> · <a href="https://nomansskyhub.app/assets/nms-hub-teaser-30s.mp4">34 s teaser</a> · <a href="https://nomansskyhub.app/assets/nms-hub-creator-pack.zip">creator pack</a> (free to use, original music)</p>
 
+**Contents** — long sections are folded; tap to open.
+
+- [What it does](#what-it-does)
+- [Take a tour](#take-a-tour)
+- [The family](#the-family)
+- [How it's built](#how-its-built)
+- [Videos for creators](#videos-for-creators)
+- [Credits](#credits)
+- [Using this code?](#using-this-code)
+- [Licence](#licence)
+
+<!-- folded -->
+
 ## What it does
+
+<details>
+<summary>▸ Tap to open</summary>
 
 - **Anomaly intro and cinematic hero** with a live clock and a status bar showing the current expedition (name and time left).
 - **Community Research.** Inside the expedition card, a live strip shows the Space Anomaly's Community Research: the tier (e.g. *Tier 2 of 2*) and how far through it Travellers are, with a bar, exactly as on Hello Games' [Galactic Atlas](https://galacticatlas.nomanssky.com/poi/community-research) sidebar. As more universal data is submitted, the Quicksilver Synthesis Companion unlocks more collectables. Tap it to open the official page. It also appears in the top-bar ticker, rechecks every 10 minutes, and stays hidden if the Atlas isn't answering, so it never shows a wrong number.
@@ -54,6 +70,8 @@ The front door to a family of free, fan-made *No Man's Sky* tools. One cinematic
 
 ![Portal wallpaper, planet of the day and the expedition countdown](screenshots/05-make-it-yours.jpg)
 
+</details>
+
 ## Take a tour
 
 One gold **▶ TAKE A TOUR** button in the footer starts a 7-step tour of the page itself (the same spotlight tour as Atlas, Weather, Translator and Theme): the six tool cards, the portal dialer, the translator, Top surveyors + Get on the board, 🔥 Trending, My Traveller ID and the 🌐 language button. Skip, Back and Next on every step; Esc or the phone's Back button closes it. The last step has **▶ Watch the tools in action**, which opens the video pop-up with the teaser, the portal-dialer clip and the full tour (videos only load when tapped). Creator downloads (this video, creator pack, shot list) live inside it. First-time visitors are offered the tour once by a small **New here?** box after the intro. The tour lives in `nms-tour.js` (shared by every site).
@@ -74,6 +92,9 @@ One gold **▶ TAKE A TOUR** button in the footer starts a 7-step tour of the pa
 
 ## How it's built
 
+<details>
+<summary>▸ Tap to open</summary>
+
 Plain HTML, CSS and JavaScript with no build step and no framework. Deployed on Netlify straight from this repo: every push to `main` goes live.
 
 | File | What it is |
@@ -91,6 +112,8 @@ Plain HTML, CSS and JavaScript with no build step and no framework. Deployed on 
 | `sw.js` | Service worker for install and offline use |
 | `manifest.webmanifest` | App install details |
 | `assets/` | Backgrounds, intro video, glyph masks, icons and the NMS alphabet font |
+
+</details>
 
 ## Videos for creators
 
