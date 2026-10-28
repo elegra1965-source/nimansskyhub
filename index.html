@@ -135,9 +135,10 @@ img{max-width:100%}
 @keyframes glitchB{0%,88%,100%{clip-path:inset(0 0 100% 0);transform:none}89%{clip-path:inset(70% 0 5% 0);transform:translate(6px,0)}91%{clip-path:inset(20% 0 65% 0);transform:translate(-5px,0)}94%{clip-path:inset(0 0 100% 0)}}
 .toggle{background:rgba(0,0,0,.35);border:1px solid rgba(240,165,0,.45);border-radius:100px;padding:8px 18px;font-family:var(--f-mono);font-size:.76rem;letter-spacing:4px;color:var(--gold);cursor:pointer}
 .hero-sub{margin:0;max-width:46ch;font-size:1.25rem;color:rgba(234,246,255,.85);text-shadow:0 2px 12px rgba(0,0,0,.8)}
-.hero-ctas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:6px}
-.hero-ctas .btn{padding:16px 28px;font-size:.8rem;letter-spacing:2px}
+.hero-ctas{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:12px;width:min(900px,100%);margin:6px auto 0}
+.hero-ctas .btn{padding:14px 10px;font-size:.74rem;letter-spacing:1.5px;justify-content:center;text-align:center;min-width:0}
 .hero-ctas .btn-replay{background:rgba(0,0,0,.4);border-color:rgba(0,229,255,.4);backdrop-filter:blur(6px)}
+.hero-ctas .btn-herotour{border-color:rgba(240,165,0,.55);color:var(--gold)}
 .hud-read{position:absolute;bottom:56px;z-index:3;font-family:var(--f-mono);font-size:.76rem;letter-spacing:3px;color:var(--text-dim);line-height:1.8}
 .hud-read.l{left:70px}.hud-read.r{right:70px;text-align:right}
 .scroll-hint{position:absolute;left:50%;bottom:46px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;font-family:var(--f-mono);font-size:.66rem;letter-spacing:4px;color:var(--text-dim);animation:bob 2s ease-in-out infinite;transform:translateX(-50%)}
@@ -415,6 +416,7 @@ HUB</h1>
       <a class="btn btn-primary" href="#nodes">CHOOSE A NODE ↓</a>
       <button id="replayIntro" class="btn btn-replay" type="button">↻ REPLAY THE ANOMALY</button>
       <button id="installBtn" class="btn btn-replay" type="button" hidden>⬇ INSTALL APP</button>
+      <button id="heroTour" class="btn btn-replay btn-herotour" type="button" title="Take a quick tour of the Hub">▶ TAKE A TOUR</button>
     </div>
     <div class="tick" id="chartedTicker" role="region" hidden></div>
   </div>
@@ -1082,7 +1084,7 @@ HUB</h1>
 <script src="trending.js?v=20261027"></script>
 <script src="mobile.js"></script>
 <script src="/nms-tour.js?v=2"></script>
-<script>NMSTour.init({id:'hub',launchers:['#tourOpen'],
+<script>NMSTour.init({id:'hub',launchers:['#tourOpen','#heroTour'],
   steps:[
     {sel:'.grid-nodes',title:'Six free tools',body:'Tap a card to open that tool. Each one works on phone and PC and installs like an app.'},
     {sel:'.ring-wrap',title:'Portal dialer',body:'Tap the glyphs round the ring or type the hex code, then copy, share or open it on the Galactic Map.'},
@@ -1094,5 +1096,6 @@ HUB</h1>
   ],
   end:{label:'▶ WATCH THE TOOLS IN ACTION',run:function(){if(window.NMSHubVideos)window.NMSHubVideos();}},
   waitFor:function(){var i=document.getElementById('intro');return !i||getComputedStyle(i).display==='none';}});</script>
+<script src="/nms-totop.js?v=1" defer></script>
 </body>
 </html>

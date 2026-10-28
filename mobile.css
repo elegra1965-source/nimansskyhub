@@ -44,7 +44,7 @@
   .saved.open .saved-toggle{margin-bottom:12px}
 
   /* 4. hero: one main button; replay/install become small links */
-  .hero-ctas{gap:4px 14px}
+  .hero-ctas{display:flex;flex-wrap:wrap;justify-content:center;width:auto;gap:4px 14px}
   .hero-ctas .btn-primary{flex:1 1 100%;max-width:320px}
   .hero-ctas .btn-replay{background:none!important;border:0!important;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none!important;
     padding:8px 4px!important;font-size:.62rem!important;color:var(--text-dim)!important;text-decoration:underline;text-underline-offset:4px}
