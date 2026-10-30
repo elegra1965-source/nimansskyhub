@@ -1,0 +1,71 @@
+/* No Man's Sky Hub — Reviews & feedback pop-up (2026-10-30). See feedback.js. */
+footer .share .btn-fb{border-color:var(--cyan);color:var(--cyan)}
+footer .share .btn-fb .fb-s{display:none}
+@media (max-width:899px){footer .share .btn-fb .fb-l{display:none}footer .share .btn-fb .fb-s{display:inline}}
+@media (max-width:400px){footer .share .btn{padding:10px 12px}}
+@media (max-width:360px){footer .share{gap:8px}footer .share .btn{padding:9px 9px;letter-spacing:1px}}
+#fbDlg{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,6,12,.88)}
+#fbDlg.show{display:flex}
+#fbBox{position:relative;width:100%;max-width:460px;max-height:100%;overflow:auto;overscroll-behavior:contain;background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 30px rgba(0,229,255,.08)}
+#fbBox [hidden]{display:none!important}
+#fbBox::before,#fbBox::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--cyan);pointer-events:none}
+#fbBox::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:10px}
+#fbBox::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:10px}
+.fb-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.fb-head .kicker{font-size:.72rem;letter-spacing:4px}
+#fbClose{flex:none;background:none;border:1px solid var(--border-soft);border-radius:6px;color:var(--cyan);font-size:1.1rem;line-height:1;width:40px;height:40px;cursor:pointer}
+#fbClose:hover{border-color:var(--cyan)}
+.fb-tabs{display:flex;gap:6px}
+.fb-tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--text-dim);font-family:var(--f-mono);font-size:.66rem;letter-spacing:2px;padding:8px 0;cursor:pointer}
+.fb-tabs button[aria-selected="true"]{color:var(--cyan);border-color:var(--cyan)}
+.fb-tabs button:focus-visible{outline:1px solid var(--cyan);outline-offset:2px}
+.fb-form{display:flex;flex-direction:column;gap:14px}
+.fb-lbl{font-family:var(--f-mono);font-size:.66rem;letter-spacing:2px;color:var(--text-dim);margin:0 0 6px}
+.fb-lbl small{opacity:.75;letter-spacing:1px;font-size:inherit}
+.fb-chips{display:flex;flex-wrap:wrap;gap:6px}
+.fb-chips label{position:relative;cursor:pointer}
+.fb-chips input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.fb-chips span{display:inline-block;border:1px solid var(--border-soft);border-radius:999px;padding:7px 11px;font-family:var(--f-body);font-size:.92rem;font-weight:600;color:var(--text);transition:background .15s,border-color .15s,color .15s}
+.fb-type span{display:inline-flex;align-items:center;gap:6px}
+.fb-ico{width:24px;height:24px;margin:-3px 0;flex:none;object-fit:contain}
+.fb-star{color:var(--gold);font-weight:400}
+.fb-chips input:checked+span{border-color:var(--cyan);background:rgba(0,229,255,.12);color:var(--white)}
+.fb-type input[value="bug"]:checked+span{border-color:var(--red);background:rgba(255,51,34,.12)}
+.fb-type input[value="idea"]:checked+span{border-color:var(--gold);background:rgba(240,165,0,.12)}
+.fb-chips input:focus-visible+span{outline:1px solid var(--cyan);outline-offset:2px}
+.fb-stars{display:flex;gap:4px}
+.fb-stars button{background:none;border:0;padding:2px 3px;font-size:1.6rem;line-height:1;color:rgba(207,224,240,.25);cursor:pointer}
+.fb-stars button.on{color:var(--gold);text-shadow:0 0 8px rgba(240,165,0,.5)}
+.fb-stars button:focus-visible{outline:1px solid var(--cyan);border-radius:4px}
+.fb-ta,.fb-in{width:100%;box-sizing:border-box;background:var(--hud-bg);border:1px solid var(--border-soft);border-radius:6px;color:var(--white);font-family:var(--f-body);font-size:1rem;padding:10px 12px}
+.fb-ta{min-height:96px;resize:vertical}
+.fb-ta:focus,.fb-in:focus{outline:none;border-color:var(--cyan)}
+.fb-count{text-align:right;font-family:var(--f-mono);font-size:.62rem;letter-spacing:1px;color:var(--text-dim);margin-top:4px}
+.fb-sw{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.95rem;color:var(--text)}
+.fb-sw input{appearance:none;-webkit-appearance:none;flex:none;width:38px;height:22px;border-radius:11px;background:rgba(255,255,255,.12);position:relative;cursor:pointer;margin:1px 0 0;transition:background .2s}
+.fb-sw input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--text);transition:left .2s}
+.fb-sw input:checked{background:var(--cyan)}.fb-sw input:checked::after{left:19px;background:var(--on-cyan)}
+.fb-sw input:focus-visible{outline:1px solid var(--cyan);outline-offset:2px}
+.fb-note{font-size:.82rem;color:var(--text-dim);margin:0}
+.fb-err{font-size:.88rem;color:var(--red);margin:0}
+.fb-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.fb-send{width:100%;padding:14px;border-radius:8px;border:0;background:var(--cyan);color:var(--on-cyan);font-family:var(--f-display);font-size:.74rem;font-weight:700;letter-spacing:2px;cursor:pointer}
+.fb-send:disabled{opacity:.4;cursor:default}
+.fb-done{text-align:center;padding:18px 4px 6px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.fb-done .tick{width:56px;height:56px;border:2px solid var(--cyan);border-radius:50%;display:grid;place-items:center;color:var(--cyan);font-size:1.6rem;box-shadow:0 0 18px rgba(0,229,255,.35)}
+.fb-done h3{margin:0;font-family:var(--f-display);font-size:.95rem;letter-spacing:3px;color:var(--white)}
+.fb-done .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.fb-done .btn{padding:10px 16px;font-size:.64rem}
+.fb-say{display:flex;flex-direction:column;gap:10px}
+.fb-q{border-left:2px solid var(--cyan);padding:8px 12px;background:var(--panel);border-radius:0 6px 6px 0}
+.fb-q p{margin:0 0 6px;font-size:.98rem;color:var(--text)}
+.fb-q cite{display:block;line-height:1.5;font-family:var(--f-mono);font-size:.62rem;letter-spacing:1px;color:var(--text-dim);font-style:normal}
+.fb-q .st{color:var(--gold);letter-spacing:2px}
+.fb-empty{text-align:center;color:var(--text-dim);font-size:.92rem;padding:16px 6px}
+.fb-say .btn{padding:10px 16px;font-size:.64rem;align-self:center}
+html.fb-open #nms-top-btn,html.fb-open .to-top,html.fb-open #nmsTourPill,html.fb-open #nmsCalmBtn{visibility:hidden}
+/* reviews in the 'Live from the Galactic Map' tape (ticker.js) */
+.tick-item.tick-rev::before{color:var(--gold)}
+.tick-item.tick-rev .st{color:var(--gold);letter-spacing:1px;font-size:.9rem}
+.tick-item.tick-rev i{color:var(--text);font-style:italic}
+@media (prefers-reduced-motion:reduce){.fb-chips span,.fb-sw input,.fb-sw input::after{transition:none}}

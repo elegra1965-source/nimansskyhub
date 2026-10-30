@@ -41,7 +41,22 @@
     return a;
   }
 
-  function render(list) {
+  // 2026-10-30: reviews Tony approved (feedback.js) ride along in the tape; a tap opens them in the pop-up
+  function revItem(r, dup) {
+    var a = el('a', 'tick-item tick-rev' + (dup ? ' tick-dup' : ''));
+    a.href = '#reviews';
+    if (dup) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
+    if (r.s) a.appendChild(el('span', 'st', '\u2605'.repeat(r.s)));
+    var q = el('i', null, '\u201C' + r.q + '\u201D'); q.setAttribute('translate', 'no'); a.appendChild(q);
+    if (r.w) { var w = el('small', null, '\u2014 ' + r.w); w.setAttribute('translate', 'no'); a.appendChild(w); }
+    a.addEventListener('click', function (e) { e.preventDefault(); if (window.NMSFeedback) window.NMSFeedback.openReviews(); });
+    return a;
+  }
+
+  function render(list, revs) {
+    revs = (revs || []).filter(function (r) { return r && r.q; }).slice(0, 6).map(function (r) {
+      return { s: r.s | 0, w: plain(r.w), q: plain(r.q).length > 140 ? plain(r.q).slice(0, 137).trim() + '\u2026' : plain(r.q) };
+    });
     var start = new Date(); start.setHours(0, 0, 0, 0);
     var week = list.filter(function (x) { return x.t > Date.now() - 7 * DAY; });
     var today = week.filter(function (x) { return x.t >= start.getTime(); }).length;
@@ -58,14 +73,27 @@
     var n = el('span', 'tl-n');
     var sys = function (v) { return v === 1 ? ' SYSTEM' : ' SYSTEMS'; };
     var part = function (num, words) { var p = el('span', 'tl-p'); p.appendChild(el('b', null, String(num))); p.appendChild(document.createTextNode(words)); return p; };
+    // 2026-10-30 (Tony): '4 SYSTEMS CHARTED TODAY · 5 THIS WEEK' on one line, 'BY TRAVELLERS' under it on phones
+    var row = el('span', 'tl-row');
     if (today) {
-      n.appendChild(part(today, sys(today) + ' CHARTED BY TRAVELLERS TODAY'));
-      n.appendChild(el('span', 'tl-sep', '·'));
-      n.appendChild(part(week.length, ' THIS WEEK'));
+      row.appendChild(part(today, sys(today) + ' CHARTED TODAY'));
+      row.appendChild(el('span', 'tl-sep', '·'));
+      row.appendChild(part(week.length, ' THIS WEEK'));
     } else {
-      n.appendChild(part(week.length, sys(week.length) + ' CHARTED BY TRAVELLERS THIS WEEK'));
+      row.appendChild(part(week.length, sys(week.length) + ' CHARTED THIS WEEK'));
     }
+    row.appendChild(el('span', 'tl-by', 'BY TRAVELLERS'));
+    n.appendChild(row);
     lab.appendChild(n);
+    // a '·' left at the end of a line looks untidy: hide it when the line breaks there
+    function sepFit() {
+      var sp = row.querySelector('.tl-sep'); if (!sp) return;
+      sp.style.display = '';
+      var nx = sp.nextElementSibling;
+      if (nx && nx.offsetTop > sp.offsetTop + 2) sp.style.display = 'none';
+    }
+    requestAnimationFrame(sepFit);
+    if (!window.__tlSepFit) { window.__tlSepFit = 1; addEventListener('resize', function () { var r = document.querySelector('.tl-row .tl-sep'); if (r) { r.style.display = ''; var nx = r.nextElementSibling; if (nx && nx.offsetTop > r.offsetTop + 2) r.style.display = 'none'; } }); document.addEventListener('nms-lang', function () { setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 50); }); }
     box.appendChild(lab);
 
     var view = el('div', 'tick-view');
@@ -80,11 +108,19 @@
       a.appendChild(el('small', null, (GAL[top1.galaxy] || ('Galaxy ' + (top1.galaxy + 1)))));
       return a;
     }
-    if (top1) track.appendChild(trendItem(false));
-    items.forEach(function (x) { track.appendChild(item(x, false)); });
-    if (top1) track.appendChild(trendItem(true));
-    items.forEach(function (x) { track.appendChild(item(x, true)); }); // second copy makes the loop seamless
-    if (!items.length) track.appendChild(el('span', 'tick-item', 'Travellers are charting the galaxy right now'));
+    // one review after every 3 charted systems (the rest at the end)
+    function fill(dup) {
+      var ri = 0;
+      if (top1) track.appendChild(trendItem(dup));
+      items.forEach(function (x, i) {
+        track.appendChild(item(x, dup));
+        if ((i + 1) % 3 === 0 && ri < revs.length) track.appendChild(revItem(revs[ri++], dup));
+      });
+      while (ri < revs.length) track.appendChild(revItem(revs[ri++], dup));
+    }
+    fill(false);
+    fill(true); // second copy makes the loop seamless
+    if (!items.length && !revs.length) track.appendChild(el('span', 'tick-item', 'Travellers are charting the galaxy right now'));
     view.appendChild(track);
     box.appendChild(view);
 
@@ -117,6 +153,6 @@
     var list = ((j && j.systems) || []).map(function (s) {
       return { t: Date.parse(s.editedAt), galaxy: s.galaxy | 0, address: String(s.address || '').toUpperCase(), name: plain(s.name) || 'an unnamed system', who: plain(s.editor).trim() };
     }).filter(function (x) { return x.t && /^[0-9A-F]{12}$/.test(x.address); });
-    render(list);
+    return Promise.resolve(window.NMS_REVIEWS).then(function (revs) { render(list, revs); }, function () { render(list, []); });
   }).catch(function () { box.hidden = true; });
 })();

@@ -366,7 +366,8 @@ footer .share .btn-tour{border-color:var(--gold);color:var(--gold)}
 <link rel="stylesheet" href="alliances.css">
 <link rel="stylesheet" href="expguide.css">
 <link rel="stylesheet" href="traveller.css">
-<link rel="stylesheet" href="ticker.css">
+<link rel="stylesheet" href="ticker.css?v=20261030">
+<link rel="stylesheet" href="feedback.css?v=20261030">
 <link rel="stylesheet" href="discoveries.css?v=20261027">
 <link rel="stylesheet" href="trending.css">
 <link rel="stylesheet" href="mobile.css">
@@ -566,6 +567,7 @@ HUB</h1>
       <button class="btn" type="button" data-share="x">SHARE ON X</button>
       <button class="btn" type="button" data-share="reddit">REDDIT</button>
       <button class="btn" type="button" data-share="discord">DISCORD</button>
+      <button class="btn btn-fb" type="button" id="fbOpen" aria-haspopup="dialog" title="Send a review, report a bug or ask for something new"><span class="fb-l">★ REVIEWS &amp; FEEDBACK</span><span class="fb-s">★ REVIEWS</span></button>
       <button class="btn btn-tour" type="button" id="tourOpen" aria-haspopup="dialog" title="Take a quick tour of the Hub">▶ TAKE A TOUR</button>
     </div>
     <div class="mono" style="font-size:.8rem;letter-spacing:2px;color:var(--text-dim)" translate="no">BUILT BY ELEGRA1965 · TRAVELLER T672B774 · FRIEND CODE MGD8-C6PP-XKFGT</div>
@@ -1079,7 +1081,8 @@ HUB</h1>
 <script src="expguide.js"></script>
 <script src="research.js"></script>
 <script src="traveller.js"></script>
-<script src="ticker.js"></script>
+<script src="feedback.js?v=20261030"></script>
+<script src="ticker.js?v=20261030"></script>
 <script src="discoveries.js?v=20261027"></script>
 <script src="trending.js?v=20261027"></script>
 <script src="mobile.js"></script>
@@ -1092,6 +1095,7 @@ HUB</h1>
     {sel:'#discoveries .dc-col',title:'Top surveyors',body:'Who charted the most on the Galactic Map this week. Follow the 3 steps to get your name here.'},
     {sel:'#trending',title:'🔥 Trending',body:'The systems travellers opened most this week. Tap one to fly there.'},
     {sel:'#traveller',title:'My Traveller ID',body:'Save your name, platform and home galaxy once. ATLAS greets you by name and the Galactic Map opens in your home galaxy.'},
+    {sel:'#fbOpen',title:'Reviews & feedback',body:'Tell us what you think, report a bug or ask for something new. Reviews you OK to share scroll past in the live strip at the top.'},
     {sel:['#langBtn','.jb-lang'],top:true,title:'Your language',body:'Pick your language once and every site in the family follows. Want to see the tools in action? Watch the video tour.'}
   ],
   end:{label:'▶ WATCH THE TOOLS IN ACTION',run:function(){if(window.NMSHubVideos)window.NMSHubVideos();}},
