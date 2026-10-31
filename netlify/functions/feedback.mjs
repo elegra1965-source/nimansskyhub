@@ -18,6 +18,9 @@
    GET   ?approve=<id>&sig=..     -> Tony's link: put a review on the Hub
    GET   ?hide=<id>&sig=..        -> Tony's link: take it off again
    GET   ?inbox=1&sig=..          -> Tony's link: everything sent, bugs first
+   GET   ?del=<id>&sig=..         -> Tony's link (in the inbox): asks "delete this?";
+                                     &yes=1 deletes it for good (and takes it off the
+                                     site if it was an approved review) (2026-10-31)
 
    2026-10-31: the other 5 sites (map/atlas/weather/translator/theme .nomansskyhub.app)
    send here too, from the shared nms-feedback.js -> CORS for *.nomansskyhub.app,
@@ -124,9 +127,10 @@ async function inboxPage(store, url) {
       ? `<span class="ok">ON THE HUB</span> · <a href="${link("hide" + it.id, "hide=" + it.id)}">take it off</a>`
       : `<a href="${link("approve" + it.id, "approve=" + it.id)}">✓ approve</a>`;
     else if (it.type === "review") act = "private (not OK to show)";
+    const del = `<a href="${link("del" + it.id, "del=" + it.id)}" style="color:#ff6b5e">delete</a>`;
     const dev = it.type === "bug" ? ` · ${esc(it.info.browser || "")} ${esc(it.info.screen || "")}${it.info.installed ? " · installed" : ""}` : "";
     return `<div class="it ${it.type}"><div class="k">${icon} · ${new Date(it.t).toISOString().slice(0, 16).replace("T", " ")} · ${esc(tools || "no tool")} · ${esc(it.info.lang || "")} · from ${esc(TOOL_NAME[it.info.site] || "Hub")}${dev}</div>
-<div class="t">${it.rating ? `<span class="st">${"★".repeat(it.rating)}</span> ` : ""}${esc(it.text)}</div><div class="k">${esc(it.name || "(no name)")} ${act ? " · " + act : ""}</div></div>`;
+<div class="t">${it.rating ? `<span class="st">${"★".repeat(it.rating)}</span> ` : ""}${esc(it.text)}</div><div class="k">${esc(it.name || "(no name)")} ${act ? " · " + act : ""} · ${del}</div></div>`;
   }).join("") || "<p>Nothing yet.</p>";
   return page("Hub feedback inbox", `<h1>HUB FEEDBACK INBOX</h1>${tabs}${list}`);
 }
@@ -143,6 +147,22 @@ export default async (req, context) => {
       return json({ reviews: list }, 200, { "cache-control": "public, max-age=300", "access-control-allow-origin": "*" });
     }
     const sig = url.searchParams.get("sig");
+    const dl = url.searchParams.get("del");
+    if (dl) {
+      const id = String(dl).replace(/[^a-z0-9]/gi, "");
+      if (!okSig("del" + id, sig)) return page("Link not valid", "<h1>LINK NOT VALID</h1><p>This link doesn't work. Use the one in your feedback inbox.</p>", 403);
+      const it = await store.get("items/" + id, { type: "json" });
+      const back = `<p><a href="${link("inbox", "inbox=1")}">Back to the inbox</a></p>`;
+      if (!it) return page("Not found", `<h1>ALREADY GONE</h1><p>That message isn't there any more.</p>${back}`, 404);
+      if (url.searchParams.get("yes") !== "1") {
+        return page("Delete?", `<h1>DELETE THIS MESSAGE?</h1><div class="it ${it.type}"><div class="t">${esc(it.text)}</div><div class="k">${esc(it.name || "(no name)")}</div></div>
+<p>It is removed for good${it.approved ? " and taken off the site" : ""}. This can't be undone.</p>
+<p><a href="${link("del" + id, "del=" + id)}&yes=1" style="background:#ff3322;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:bold">YES, DELETE IT</a></p>${back}`);
+      }
+      await store.delete("items/" + id);
+      if (it.approved) await rebuildApproved(store);
+      return page("Deleted", `<h1>DELETED</h1><p>“${esc(it.text)}” is gone.</p>${back}`);
+    }
     const ap = url.searchParams.get("approve"), hd = url.searchParams.get("hide");
     if (ap || hd) {
       const id = String(ap || hd).replace(/[^a-z0-9]/gi, "");
