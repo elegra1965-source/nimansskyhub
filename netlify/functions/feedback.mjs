@@ -19,6 +19,10 @@
    GET   ?hide=<id>&sig=..        -> Tony's link: take it off again
    GET   ?inbox=1&sig=..          -> Tony's link: everything sent, bugs first
 
+   2026-10-31: the other 5 sites (map/atlas/weather/translator/theme .nomansskyhub.app)
+   send here too, from the shared nms-feedback.js -> CORS for *.nomansskyhub.app,
+   info.site says which site it came from (shown in the email subject + inbox).
+
    Links are signed with FEEDBACK_SECRET (HMAC), so only Tony's emails work.
 
    Netlify settings this needs (Site configuration -> Environment variables):
@@ -41,6 +45,12 @@ const FN = SITE + "/.netlify/functions/feedback";
 const json = (o, status = 200, extra = {}) => new Response(JSON.stringify(o), {
   status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...extra }
 });
+// sister sites may post here (browser CORS); anything else is just same-origin as before
+const ORIGIN_OK = /^https:\/\/([a-z0-9-]+\.)?nomansskyhub\.app$/;
+const cors = req => {
+  const o = req.headers.get("origin") || "";
+  return ORIGIN_OK.test(o) ? { "access-control-allow-origin": o, "access-control-allow-methods": "GET, POST, OPTIONS", "access-control-allow-headers": "content-type", "access-control-max-age": "86400", "vary": "origin" } : {};
+};
 const page = (title, body, status = 200) => new Response(
   `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)}</title>
 <style>body{margin:0;padding:20px;background:#0a1424;color:#cfe0f0;font:16px/1.5 system-ui,sans-serif}h1{font-size:1.1rem;letter-spacing:2px;color:#00e5ff}a{color:#00e5ff}
@@ -77,11 +87,12 @@ async function sendEmail(it) {
   const tag = it.type === "bug" ? "[BUG]" : it.type === "idea" ? "[IDEA]" : "[REVIEW]";
   const tools = (it.tools || []).map(t => TOOL_NAME[t]).join(", ") || "no tool picked";
   const stars = it.rating ? " " + "★".repeat(it.rating) : "";
-  const subject = `${tag} ${tools}${stars} — Hub feedback`;
+  const from = TOOL_NAME[it.info.site] || "Hub";
+  const subject = `${tag} ${tools}${stars} — ${from} feedback`;
   const rows = [
     `<p style="white-space:pre-wrap;font-size:16px">${esc(it.text)}</p>`,
     `<p><b>From:</b> ${esc(it.name || "(no name)")}<br><b>Tools:</b> ${esc(tools)}${it.rating ? `<br><b>Rating:</b> ${"★".repeat(it.rating)}` : ""}`,
-    `<br><b>OK to show on the site:</b> ${it.show ? "YES" : "no"}<br><b>Language:</b> ${esc(it.info.lang || "?")}</p>`
+    `<br><b>OK to show on the site:</b> ${it.show ? "YES" : "no"}<br><b>Language:</b> ${esc(it.info.lang || "?")}<br><b>Sent from:</b> ${esc(from)}</p>`
   ];
   if (it.type === "bug") rows.push(`<p><b>Device:</b> ${esc(it.info.browser || "?")} · screen ${esc(it.info.screen || "?")} · ${it.info.installed ? "installed app" : "browser"} · ${esc(it.info.app || "")}</p>`);
   if (it.type === "review" && it.show && sign("approve" + it.id)) rows.push(`<p><a href="${link("approve" + it.id, "approve=" + it.id)}" style="background:#00e5ff;color:#00131a;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:bold">✓ APPROVE — show it on the Hub</a></p>`);
@@ -114,7 +125,7 @@ async function inboxPage(store, url) {
       : `<a href="${link("approve" + it.id, "approve=" + it.id)}">✓ approve</a>`;
     else if (it.type === "review") act = "private (not OK to show)";
     const dev = it.type === "bug" ? ` · ${esc(it.info.browser || "")} ${esc(it.info.screen || "")}${it.info.installed ? " · installed" : ""}` : "";
-    return `<div class="it ${it.type}"><div class="k">${icon} · ${new Date(it.t).toISOString().slice(0, 16).replace("T", " ")} · ${esc(tools || "no tool")} · ${esc(it.info.lang || "")}${dev}</div>
+    return `<div class="it ${it.type}"><div class="k">${icon} · ${new Date(it.t).toISOString().slice(0, 16).replace("T", " ")} · ${esc(tools || "no tool")} · ${esc(it.info.lang || "")} · from ${esc(TOOL_NAME[it.info.site] || "Hub")}${dev}</div>
 <div class="t">${it.rating ? `<span class="st">${"★".repeat(it.rating)}</span> ` : ""}${esc(it.text)}</div><div class="k">${esc(it.name || "(no name)")} ${act ? " · " + act : ""}</div></div>`;
   }).join("") || "<p>Nothing yet.</p>";
   return page("Hub feedback inbox", `<h1>HUB FEEDBACK INBOX</h1>${tabs}${list}`);
@@ -123,6 +134,8 @@ async function inboxPage(store, url) {
 export default async (req, context) => {
   const url = new URL(req.url);
   const store = getStore(STORE);
+  const C = cors(req);
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: C });
 
   if (req.method === "GET") {
     if (url.searchParams.get("reviews")) {
@@ -150,22 +163,22 @@ export default async (req, context) => {
     return json({ ok: true });
   }
 
-  if (req.method !== "POST") return json({ error: "method" }, 405);
+  if (req.method !== "POST") return json({ error: "method" }, 405, C);
 
   let b;
-  try { b = await req.json(); } catch (e) { return json({ error: "bad json" }, 400); }
-  if (!b || typeof b !== "object") return json({ error: "bad json" }, 400);
-  if (b.website) return json({ ok: true }); // spam trap filled in: pretend it worked
+  try { b = await req.json(); } catch (e) { return json({ error: "bad json" }, 400, C); }
+  if (!b || typeof b !== "object") return json({ error: "bad json" }, 400, C);
+  if (b.website) return json({ ok: true }, 200, C); // spam trap filled in: pretend it worked
 
   const type = TYPES.includes(b.type) ? b.type : "review";
   const text = clean(b.text, 1000);
-  if (text.length < 3) return json({ error: "too short" }, 400);
+  if (text.length < 3) return json({ error: "too short" }, 400, C);
   const tools = Array.isArray(b.tools) ? [...new Set(b.tools.filter(t => TOOLS.includes(t)))] : [];
   const rating = type === "review" ? Math.max(0, Math.min(5, b.rating | 0)) : 0;
   const name = clean(b.name, 40);
   const show = type === "review" && !!b.show;
   const inf = b.info && typeof b.info === "object" ? b.info : {};
-  const info = { app: clean(inf.app, 40), lang: clean(inf.lang, 8), screen: clean(inf.screen, 20), installed: !!inf.installed, browser: clean(inf.browser, 60) };
+  const info = { site: TOOLS.includes(inf.site) ? inf.site : "hub", app: clean(inf.app, 40), lang: clean(inf.lang, 8), screen: clean(inf.screen, 20), installed: !!inf.installed, browser: clean(inf.browser, 60) };
 
   // max 5 an hour per visitor; only a salted hash of the IP is kept, and only for that hour
   const ip = (context && context.ip) || req.headers.get("x-nf-client-connection-ip") || "";
@@ -173,7 +186,7 @@ export default async (req, context) => {
   const who = createHash("sha256").update((process.env.FEEDBACK_SECRET || "nms") + ip).digest("hex").slice(0, 20);
   const rlKey = `rl/${hour}/${who}`;
   const n = ((await store.get(rlKey, { type: "json" })) || 0) + 1;
-  if (n > MAX_PER_HOUR) return json({ error: "slow down" }, 429);
+  if (n > MAX_PER_HOUR) return json({ error: "slow down" }, 429, C);
   await store.setJSON(rlKey, n);
 
   const id = Date.now().toString(36) + randomBytes(3).toString("hex");
@@ -183,5 +196,5 @@ export default async (req, context) => {
   let mail = null;
   try { mail = await sendEmail(it); } catch (e) { console.log("feedback email failed: " + e.message); }
   console.log(`feedback: saved ${type} ${id}` + (mail && mail.sent ? " (emailed)" : ""));
-  return json({ ok: true });
+  return json({ ok: true }, 200, C);
 };

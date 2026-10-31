@@ -38,7 +38,7 @@
       '<div class="fb-head"><span class="kicker" id="fbTitle">◆ REVIEWS &amp; FEEDBACK</span><button type="button" id="fbClose" aria-label="Close">✕</button></div>' +
       '<div class="fb-tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-t="send">SEND FEEDBACK</button><button type="button" role="tab" aria-selected="false" data-t="say">WHAT TRAVELLERS SAY</button></div>' +
       '<form class="fb-form" id="fbForm" novalidate>' +
-        '<div><p class="fb-lbl">WHAT\'S IT ABOUT?</p><div class="fb-chips fb-type" role="radiogroup">' +
+        '<div><p class="fb-lbl">WHAT\'S IT ABOUT, TRAVELLER?</p><div class="fb-chips fb-type" role="radiogroup">' +
           '<label><input type="radio" name="fbType" value="review" checked><span><img class="fb-ico" src="assets/fb-ico-review.webp" srcset="assets/fb-ico-review@2x.webp 2x" alt="" width="24" height="24">Review</span></label>' +
           '<label><input type="radio" name="fbType" value="bug"><span><img class="fb-ico" src="assets/fb-ico-bug.webp" srcset="assets/fb-ico-bug@2x.webp 2x" alt="" width="24" height="24">Bug</span></label>' +
           '<label><input type="radio" name="fbType" value="idea"><span><img class="fb-ico" src="assets/fb-ico-idea.webp" srcset="assets/fb-ico-idea@2x.webp 2x" alt="" width="24" height="24">Idea / request</span></label></div></div>' +
