@@ -72,7 +72,10 @@
     var join = el('div', 'al-live dc-join');
     var jh = el('div', 'al-live-h'); jh.appendChild(el('span', 'al-dot')); var jt = el('span', 'dc-htxt', 'GET ON THE BOARD'); jt.appendChild(el('small', 'dc-hsub', 'Your name here in 3 steps')); jh.appendChild(jt); join.appendChild(jh);
     var ol = el('ol', 'dc-steps');
-    ['Open any system on the Galactic Map', 'Tap Edit system, add your name', '📷 Add a station photo: it replaces the station on the map and may show on the cards below'].forEach(function (t) { ol.appendChild(el('li', null, t)); });
+    ['Open any system on the Galactic Map', 'Tap Edit system, add your name', '📷 Add a station photo: it replaces the station on the map and may show on the cards below'].forEach(function (t, i) {
+      // 2026-10-31 (Tony): step 3 starts with the camera; its wrapped line lines up with the text, not under the camera.
+      var li = el('li'); li.appendChild(el('span', i === 2 ? 'dc-hang' : null, t)); ol.appendChild(li);
+    });
     join.appendChild(ol);
     col.appendChild(join);
     s.appendChild(col);
@@ -110,6 +113,22 @@
     return s;
   }
 
+  // Hanging indent for the camera step: measure the real width of the camera + space
+  // (it differs per phone's emoji font) and indent the wrapped lines by that much.
+  function hang() {
+    var a = document.querySelectorAll('.dc-hang');
+    for (var k = 0; k < a.length; k++) {
+      var sp = a[k], n = sp.firstChild; if (!n || n.nodeType !== 3) continue;
+      var i = n.nodeValue.indexOf(' ') + 1; if (i < 1) continue;
+      sp.style.paddingLeft = sp.style.textIndent = '';
+      var r = document.createRange(); r.setStart(n, 0); r.setEnd(n, i);
+      var w = r.getBoundingClientRect().width; if (!w) continue;
+      sp.style.paddingLeft = w + 'px'; sp.style.textIndent = -w + 'px';
+    }
+  }
+  window.addEventListener('resize', hang); document.addEventListener('nms-lang', function () { setTimeout(hang, 50); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(hang);
+
   function run() {
     fetch(FEED).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
       if (document.getElementById('discoveries')) return;
@@ -117,6 +136,7 @@
       var al = document.getElementById('alliances');
       if (al && al.parentNode) al.parentNode.insertBefore(s, al.nextSibling);
       else { var f = document.querySelector('footer'); if (f) f.parentNode.insertBefore(s, f); }
+      hang(); setTimeout(hang, 300);
     }).catch(function () {});
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
