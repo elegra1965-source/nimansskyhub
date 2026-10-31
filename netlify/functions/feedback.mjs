@@ -18,6 +18,8 @@
    GET   ?approve=<id>&sig=..     -> Tony's link: put a review on the Hub
    GET   ?hide=<id>&sig=..        -> Tony's link: take it off again
    GET   ?inbox=1&sig=..          -> Tony's link: everything sent, bugs first
+   (every one of these pages has a ✕ CLOSE button top right: closes the tab, or goes back / to the Hub when
+    the phone won't let a page close itself -- 2026-10-31, Tony: no way out on mobile)
    GET   ?del=<id>&sig=..         -> Tony's link (in the inbox): asks "delete this?";
                                      &yes=1 deletes it for good (and takes it off the
                                      site if it was an approved review) (2026-10-31)
@@ -58,7 +60,9 @@ const page = (title, body, status = 200) => new Response(
   `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)}</title>
 <style>body{margin:0;padding:20px;background:#0a1424;color:#cfe0f0;font:16px/1.5 system-ui,sans-serif}h1{font-size:1.1rem;letter-spacing:2px;color:#00e5ff}a{color:#00e5ff}
 .it{border:1px solid rgba(0,229,255,.2);border-radius:8px;padding:10px 12px;margin:10px 0;background:rgba(255,255,255,.03)}.it.bug{border-color:#ff3322}.it.idea{border-color:#f0a500}
-.k{font:12px monospace;letter-spacing:1px;color:rgba(207,224,240,.65)}.t{white-space:pre-wrap;margin:6px 0}.st{color:#f0a500}.ok{color:#00ff88}.tab a{margin-right:12px}</style>${body}`,
+.k{font:12px monospace;letter-spacing:1px;color:rgba(207,224,240,.65)}.t{white-space:pre-wrap;margin:6px 0}.st{color:#f0a500}.ok{color:#00ff88}.tab a{margin-right:12px}h1{margin-right:96px}
+#x{position:fixed;top:14px;right:14px;z-index:9;background:#0a1424;border:1px solid rgba(0,229,255,.45);border-radius:6px;color:#00e5ff;font:600 13px/1 system-ui,sans-serif;letter-spacing:1px;padding:10px 12px;cursor:pointer}</style>
+<button id="x" type="button" onclick="window.close();setTimeout(function(){if(history.length>1)history.back();else location.href='https://nomansskyhub.app'},300)">✕ CLOSE</button>${body}`,
   { status, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function clean(s, max) { return String(s == null ? "" : s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim().slice(0, max); }
