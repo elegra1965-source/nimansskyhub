@@ -72,7 +72,7 @@
     var join = el('div', 'al-live dc-join');
     var jh = el('div', 'al-live-h'); jh.appendChild(el('span', 'al-dot')); var jt = el('span', 'dc-htxt', 'GET ON THE BOARD'); jt.appendChild(el('small', 'dc-hsub', 'Your name here in 3 steps')); jh.appendChild(jt); join.appendChild(jh);
     var ol = el('ol', 'dc-steps');
-    ['Open any system on the Galactic Map', 'Tap Edit system, add your name', '📷 Add a station photo — it shows here'].forEach(function (t) { ol.appendChild(el('li', null, t)); });
+    ['Open any system on the Galactic Map', 'Tap Edit system, add your name', '📷 Add a station photo: it replaces the station on the map and may show on the cards below'].forEach(function (t) { ol.appendChild(el('li', null, t)); });
     join.appendChild(ol);
     col.appendChild(join);
     s.appendChild(col);
