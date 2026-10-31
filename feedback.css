@@ -28,7 +28,6 @@ footer .share .btn-fb .fb-s{display:none}
 .fb-chips span{display:inline-block;border:1px solid var(--border-soft);border-radius:999px;padding:7px 11px;font-family:var(--f-body);font-size:.92rem;font-weight:600;color:var(--text);transition:background .15s,border-color .15s,color .15s}
 .fb-type span{display:inline-flex;align-items:center;gap:6px}
 .fb-ico{width:24px;height:24px;margin:-3px 0;flex:none;object-fit:contain}
-.fb-star{color:var(--gold);font-weight:400}
 .fb-chips input:checked+span{border-color:var(--cyan);background:rgba(0,229,255,.12);color:var(--white)}
 .fb-type input[value="bug"]:checked+span{border-color:var(--red);background:rgba(255,51,34,.12)}
 .fb-type input[value="idea"]:checked+span{border-color:var(--gold);background:rgba(240,165,0,.12)}
