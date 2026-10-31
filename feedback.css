@@ -6,8 +6,10 @@ footer .share .btn-fb .fb-s{display:none}
 @media (max-width:360px){footer .share{gap:8px}footer .share .btn{padding:9px 9px;letter-spacing:1px}}
 #fbDlg{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,6,12,.88)}
 #fbDlg.show{display:flex}
-#fbBox{position:relative;width:100%;max-width:460px;max-height:100%;overflow:auto;overscroll-behavior:contain;background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 30px rgba(0,229,255,.08)}
+#fbBox{position:relative;width:100%;max-width:460px;max-height:100%;overflow-x:hidden;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,229,255,.45) transparent;overscroll-behavior:contain;background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 30px rgba(0,229,255,.08)}
 #fbBox [hidden]{display:none!important}
+/* 2026-10-31: no grey side/bottom bars on phones -- one slim cyan scroll bar only (the corner bracket poked out 1px and made a sideways bar) */
+#fbBox::-webkit-scrollbar{width:4px;height:0}#fbBox::-webkit-scrollbar-track{background:transparent}#fbBox::-webkit-scrollbar-thumb{background:rgba(0,229,255,.45);border-radius:4px}
 #fbBox::before,#fbBox::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--cyan);pointer-events:none}
 #fbBox::before{top:-1px;left:-1px;border-right:0;border-bottom:0;border-top-left-radius:10px}
 #fbBox::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-bottom-right-radius:10px}
