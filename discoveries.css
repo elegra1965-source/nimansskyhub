@@ -25,8 +25,10 @@
   border:1px solid rgba(0,229,255,.16);background:linear-gradient(180deg,rgba(15,22,32,.92),rgba(8,13,20,.92));transition:border-color .2s,box-shadow .2s,transform .2s}
 .dc-card:hover,.dc-card:focus-visible{border-color:var(--cyan);box-shadow:0 0 22px rgba(0,229,255,.22);outline:none}
 @media (prefers-reduced-motion:no-preference){.dc-card:hover{transform:translateY(-2px)}}
-.dc-shots{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;aspect-ratio:16/9;max-width:100%;background:#000}
-.dc-shots img{width:100%;height:100%;object-fit:cover;display:block}
+.dc-shots{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:2px;aspect-ratio:16/9;max-width:100%;overflow:hidden;background:#000}
+.dc-shots img{width:100%;height:100%;min-width:0;min-height:0;object-fit:cover;display:block}
+/* 2026-11-01: a tall picture (e.g. a collage saved with 'use the whole picture') stays inside the 16:9 box, shown whole */
+.dc-shots img.dc-tall{object-fit:contain}
 .dc-noshot{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;background:rgba(255,255,255,.03);font-family:var(--f-mono);font-size:11px;letter-spacing:3px;color:var(--text-dim)}
 .dc-body{padding:12px 14px 14px;display:grid;gap:7px;min-width:0}
 .dc-name{font-family:var(--f-body);font-weight:700;font-size:18px;line-height:1.2;color:var(--white);overflow-wrap:anywhere}

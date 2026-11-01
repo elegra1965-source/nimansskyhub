@@ -86,7 +86,7 @@
       a.setAttribute('aria-label', x.name + ', charted by ' + x.who + ', open on the Galactic Map');
       if (x.shots.length) {
         var sh = el('div', 'dc-shots');
-        x.shots.forEach(function (u, i) { var im = el('img'); im.src = u; im.loading = 'lazy'; im.alt = i ? 'Space station photo' : 'System screenshot'; sh.appendChild(im); });
+        x.shots.forEach(function (u, i) { var im = el('img'); im.src = u; im.loading = 'lazy'; im.alt = i ? 'Space station photo' : 'System screenshot'; im.onload = function () { if (im.naturalWidth / im.naturalHeight < 16 / 9 / x.shots.length * 0.75) im.classList.add('dc-tall'); }; sh.appendChild(im); });
         a.appendChild(sh);
       } else a.appendChild(el('div', 'dc-noshot', 'NO PHOTO YET'));
       var b = el('div', 'dc-body');
